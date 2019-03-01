@@ -89,6 +89,9 @@
 		<kotlin.compiler.incremental>true</kotlin.compiler.incremental>
 		<spark.version>2.3.1</spark.version>
 		<imglib2.version>5.6.3</imglib2.version>
+
+		<!-- NB: Deploy releases to the ImageJ Maven repository. -->
+		<releaseProfiles>deploy-to-imagej</releaseProfiles>
 	</properties>
 
 	<repositories>
