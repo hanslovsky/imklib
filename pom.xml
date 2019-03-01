@@ -70,7 +70,8 @@
 		<url>https://github.com/hanslovsky/imglib2-kotlib/issues</url>
 	</issueManagement>
 	<ciManagement>
-		<system>None</system>
+		<system>Travis CI</system>
+		<url>https://travis-ci.org/hanslovsky/imglib2-kotlib</url>
 	</ciManagement>
 
 
