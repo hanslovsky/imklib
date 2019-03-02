@@ -21,6 +21,8 @@ operator fun <T: IntegerType<T>> T.plusAssign(value: Long): Unit = setInteger(va
 operator fun <T: IntegerType<T>> T.plus(value: T): T = copy().let { it += value; it }
 operator fun <T: IntegerType<T>> T.plus(value: Int): T = copy().let { it += value; it }
 operator fun <T: IntegerType<T>> T.plus(value: Long): T = copy().let { it += value; it }
+operator fun <T: IntegerType<T>> Int.plus(value: T): T = value + this
+operator fun <T: IntegerType<T>> Long.plus(value: T): T = value + this
 
 operator fun <T: IntegerType<T>> T.minusAssign(value: T): Unit = this.sub(value)
 operator fun <T: IntegerType<T>> T.minusAssign(value: Int): Unit = setInteger(integerLong - value)
@@ -29,6 +31,8 @@ operator fun <T: IntegerType<T>> T.minusAssign(value: Long): Unit = setInteger(i
 operator fun <T: IntegerType<T>> T.minus(value: T): T = copy().let { it -= value; it }
 operator fun <T: IntegerType<T>> T.minus(value: Int): T = copy().let { it -= value; it }
 operator fun <T: IntegerType<T>> T.minus(value: Long): T = copy().let { it -= value; it }
+operator fun <T: IntegerType<T>> Int.minus(value: T): T = value.createVariable(this).let { it -= value; it }
+operator fun <T: IntegerType<T>> Long.minus(value: T): T = value.createVariable(this).let { it -= value; it }
 
 operator fun <T: IntegerType<T>> T.timesAssign(value: T): Unit = this.mul(value)
 operator fun <T: IntegerType<T>> T.timesAssign(value: Int): Unit = setInteger(value * integerLong)
@@ -37,6 +41,8 @@ operator fun <T: IntegerType<T>> T.timesAssign(value: Long): Unit = setInteger(v
 operator fun <T: IntegerType<T>> T.times(value: T): T = copy().let { it *= value; it }
 operator fun <T: IntegerType<T>> T.times(value: Int): T = copy().let { it *= value; it }
 operator fun <T: IntegerType<T>> T.times(value: Long): T = copy().let { it *= value; it }
+operator fun <T: IntegerType<T>> Int.times(value: T): T = value * this
+operator fun <T: IntegerType<T>> Long.times(value: T): T = value * this
 
 operator fun <T: IntegerType<T>> T.divAssign(value: T): Unit = this.div(value)
 operator fun <T: IntegerType<T>> T.divAssign(value: Int): Unit = setInteger(integerLong / value)
@@ -46,3 +52,5 @@ operator fun <T: IntegerType<T>> T.divAssign(value: Long): Unit = setInteger(int
 //operator fun <T: IntegerType<T>> T.div(value: T): T = copy().let { it *= value; it }
 operator fun <T: IntegerType<T>> T.div(value: Int): T = copy().let { it /= value; it }
 operator fun <T: IntegerType<T>> T.div(value: Long): T = copy().let { it /= value; it }
+operator fun <T: IntegerType<T>> Int.div(value: T): T = value.createVariable(this).let { it /= value; it }
+operator fun <T: IntegerType<T>> Long.div(value: T): T = value.createVariable(this).let { it /= value; it }

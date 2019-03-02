@@ -32,6 +32,8 @@ class TypeExtensionsKtTest {
         Assert.assertEquals(DoubleType(2.0), rt + rt)
         Assert.assertEquals(DoubleType(2.0), rt + 1.0)
         Assert.assertEquals(DoubleType(3.0), rt + 2.0f)
+        Assert.assertEquals(DoubleType(2.0), 1.0 + rt)
+        Assert.assertEquals(DoubleType(3.0), 2.0f + rt)
 
         rt += rt
         Assert.assertEquals(DoubleType(2.0), rt)
@@ -49,6 +51,8 @@ class TypeExtensionsKtTest {
         Assert.assertEquals(DoubleType(0.0), rt - rt)
         Assert.assertEquals(DoubleType(-1.0), rt - 2.0)
         Assert.assertEquals(DoubleType(-2.0), rt - 3.0f)
+        Assert.assertEquals(DoubleType(1.0), 2.0 - rt)
+        Assert.assertEquals(DoubleType(2.0), 3.0f - rt)
 
         rt -= rt
         Assert.assertEquals(DoubleType(0.0), rt)
@@ -66,6 +70,8 @@ class TypeExtensionsKtTest {
         Assert.assertEquals(DoubleType(1.0), rt * rt)
         Assert.assertEquals(DoubleType(2.0), rt * 2.0)
         Assert.assertEquals(DoubleType(3.0), rt * 3.0f)
+        Assert.assertEquals(DoubleType(2.0), 2.0 * rt)
+        Assert.assertEquals(DoubleType(3.0), 3.0f * rt)
 
         rt *= rt
         Assert.assertEquals(DoubleType(1.0), rt)
@@ -84,6 +90,8 @@ class TypeExtensionsKtTest {
 //      Assert.assertEquals(DoubleType(1.0), rt / rt)
         Assert.assertEquals(DoubleType(1.0 / 2.0), rt / 2.0)
         Assert.assertEquals(DoubleType(1.0 / 3.0), rt / 3.0f)
+        Assert.assertEquals(DoubleType(1.0 / 2.0), 2.0 / DoubleType(4.0))
+        Assert.assertEquals(DoubleType(1.0 / 3.0), 3.0f / DoubleType(9.0))
 
         rt /= rt
         Assert.assertEquals(DoubleType(1.0), rt)
@@ -101,6 +109,8 @@ class TypeExtensionsKtTest {
         Assert.assertEquals(LongType(2L), lt + lt)
         Assert.assertEquals(LongType(2L), lt + 1)
         Assert.assertEquals(LongType(3L), lt + 2L)
+        Assert.assertEquals(LongType(2L), 1 + lt)
+        Assert.assertEquals(LongType(3L), 2L + lt)
 
         lt += lt
         Assert.assertEquals(LongType(2L), lt)
@@ -118,6 +128,8 @@ class TypeExtensionsKtTest {
         Assert.assertEquals(IntType(0), it - it)
         Assert.assertEquals(IntType(-1), it - 2)
         Assert.assertEquals(IntType(-2), it - 3L)
+        Assert.assertEquals(IntType(1), 2 - it)
+        Assert.assertEquals(IntType(2), 3L - it)
 
         it -= it
         Assert.assertEquals(IntType(0), it)
@@ -135,6 +147,8 @@ class TypeExtensionsKtTest {
         Assert.assertEquals(ShortType(1), st * st)
         Assert.assertEquals(ShortType(2), st * 2)
         Assert.assertEquals(ShortType(3), st * 3L)
+        Assert.assertEquals(ShortType(2), 2 * st)
+        Assert.assertEquals(ShortType(3), 3L * st)
 
         st *= st
         Assert.assertEquals(ShortType(1), st)
@@ -153,6 +167,8 @@ class TypeExtensionsKtTest {
 //      Assert.assertEquals(ByteType(1.0), rt / rt)
         Assert.assertEquals(ByteType(5), bt / 2)
         Assert.assertEquals(ByteType(3), bt / 3L)
+        Assert.assertEquals(ByteType(5), 50 / bt)
+        Assert.assertEquals(ByteType(3), 37L / bt)
 
         bt /= bt
         Assert.assertEquals(ByteType(1), bt)

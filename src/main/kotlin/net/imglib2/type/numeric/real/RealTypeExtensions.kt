@@ -21,6 +21,9 @@ operator fun <T: RealType<T>> T.plusAssign(value: Double): Unit = setReal(value 
 operator fun <T: RealType<T>> T.plus(value: T): T = copy().let { it += value; it }
 operator fun <T: RealType<T>> T.plus(value: Float): T = copy().let { it += value; it }
 operator fun <T: RealType<T>> T.plus(value: Double): T = copy().let { it += value; it }
+operator fun <T: RealType<T>> Float.plus(value: T): T = value + this
+operator fun <T: RealType<T>> Double.plus(value: T): T = value + this
+
 
 operator fun <T: RealType<T>> T.minusAssign(value: T): Unit = this.sub(value)
 operator fun <T: RealType<T>> T.minusAssign(value: Float): Unit = setReal(realDouble - value)
@@ -29,6 +32,8 @@ operator fun <T: RealType<T>> T.minusAssign(value: Double): Unit = setReal(realD
 operator fun <T: RealType<T>> T.minus(value: T): T = copy().let { it -= value; it }
 operator fun <T: RealType<T>> T.minus(value: Float): T = copy().let { it -= value; it }
 operator fun <T: RealType<T>> T.minus(value: Double): T = copy().let { it -= value; it }
+operator fun <T: RealType<T>> Float.minus(value: T): T = value.createVariable(this).let { it -= value; it }
+operator fun <T: RealType<T>> Double.minus(value: T): T = value.createVariable(this).let { it -= value; it }
 
 operator fun <T: RealType<T>> T.timesAssign(value: T): Unit = this.mul(value)
 operator fun <T: RealType<T>> T.timesAssign(value: Float): Unit = setReal(value * realDouble)
@@ -37,6 +42,8 @@ operator fun <T: RealType<T>> T.timesAssign(value: Double): Unit = setReal(value
 operator fun <T: RealType<T>> T.times(value: T): T = copy().let { it *= value; it }
 operator fun <T: RealType<T>> T.times(value: Float): T = copy().let { it *= value; it }
 operator fun <T: RealType<T>> T.times(value: Double): T = copy().let { it *= value; it }
+operator fun <T: RealType<T>> Float.times(value: T): T = value * this
+operator fun <T: RealType<T>> Double.times(value: T): T = value * this
 
 operator fun <T: RealType<T>> T.divAssign(value: T): Unit = this.div(value)
 operator fun <T: RealType<T>> T.divAssign(value: Float): Unit = setReal(realDouble / value)
@@ -46,3 +53,5 @@ operator fun <T: RealType<T>> T.divAssign(value: Double): Unit = setReal(realDou
 //operator fun <T: RealType<T>> T.div(value: T): T = copy().let { it /= value; it }
 operator fun <T: RealType<T>> T.div(value: Float): T = copy().let { it /= value; it }
 operator fun <T: RealType<T>> T.div(value: Double): T = copy().let { it /= value; it }
+operator fun <T: RealType<T>> Float.div(value: T): T = value.createVariable(this).let { it /= value; it }
+operator fun <T: RealType<T>> Double.div(value: T): T = value.createVariable(this).let { it /= value; it }
