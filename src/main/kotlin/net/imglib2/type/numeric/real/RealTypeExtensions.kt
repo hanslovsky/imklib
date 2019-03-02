@@ -15,9 +15,34 @@ fun <T: RealType<T>> T.createVariable(value: Float): T {
 }
 
 operator fun <T: RealType<T>> T.plusAssign(value: T): Unit = this.add(value)
-operator fun <T: RealType<T>> T.plusAssign(value: Float): Unit = setReal(value + realFloat)
+operator fun <T: RealType<T>> T.plusAssign(value: Float): Unit = setReal(value + realDouble)
 operator fun <T: RealType<T>> T.plusAssign(value: Double): Unit = setReal(value + realDouble)
 
 operator fun <T: RealType<T>> T.plus(value: T): T = copy().let { it += value; it }
 operator fun <T: RealType<T>> T.plus(value: Float): T = copy().let { it += value; it }
 operator fun <T: RealType<T>> T.plus(value: Double): T = copy().let { it += value; it }
+
+operator fun <T: RealType<T>> T.minusAssign(value: T): Unit = this.sub(value)
+operator fun <T: RealType<T>> T.minusAssign(value: Float): Unit = setReal(realDouble - value)
+operator fun <T: RealType<T>> T.minusAssign(value: Double): Unit = setReal(realDouble - value)
+
+operator fun <T: RealType<T>> T.minus(value: T): T = copy().let { it -= value; it }
+operator fun <T: RealType<T>> T.minus(value: Float): T = copy().let { it -= value; it }
+operator fun <T: RealType<T>> T.minus(value: Double): T = copy().let { it -= value; it }
+
+operator fun <T: RealType<T>> T.timesAssign(value: T): Unit = this.mul(value)
+operator fun <T: RealType<T>> T.timesAssign(value: Float): Unit = setReal(value * realDouble)
+operator fun <T: RealType<T>> T.timesAssign(value: Double): Unit = setReal(value * realDouble)
+
+operator fun <T: RealType<T>> T.times(value: T): T = copy().let { it *= value; it }
+operator fun <T: RealType<T>> T.times(value: Float): T = copy().let { it *= value; it }
+operator fun <T: RealType<T>> T.times(value: Double): T = copy().let { it *= value; it }
+
+operator fun <T: RealType<T>> T.divAssign(value: T): Unit = this.div(value)
+operator fun <T: RealType<T>> T.divAssign(value: Float): Unit = setReal(realDouble / value)
+operator fun <T: RealType<T>> T.divAssign(value: Double): Unit = setReal(realDouble / value)
+
+// Cannot use this as it is shadowed by member RealType.div
+//operator fun <T: RealType<T>> T.div(value: T): T = copy().let { it /= value; it }
+operator fun <T: RealType<T>> T.div(value: Float): T = copy().let { it /= value; it }
+operator fun <T: RealType<T>> T.div(value: Double): T = copy().let { it /= value; it }
