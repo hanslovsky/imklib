@@ -1,8 +1,17 @@
 package net.imglib2
 
+import net.imglib2.type.numeric.integer.ByteType
+import net.imglib2.type.numeric.integer.IntType
 import net.imglib2.type.numeric.integer.LongType
+import net.imglib2.type.numeric.integer.ShortType
+import net.imglib2.type.numeric.integer.div
+import net.imglib2.type.numeric.integer.divAssign
+import net.imglib2.type.numeric.integer.minus
+import net.imglib2.type.numeric.integer.minusAssign
 import net.imglib2.type.numeric.integer.plus
 import net.imglib2.type.numeric.integer.plusAssign
+import net.imglib2.type.numeric.integer.times
+import net.imglib2.type.numeric.integer.timesAssign
 import net.imglib2.type.numeric.real.DoubleType
 import net.imglib2.type.numeric.real.div
 import net.imglib2.type.numeric.real.divAssign
@@ -88,19 +97,72 @@ class TypeExtensionsKtTest {
 
     @Test
     fun testAddInteger() {
-        val rt = LongType(1L)
-        Assert.assertEquals(LongType(2L), rt + rt)
-        Assert.assertEquals(LongType(2L), rt + 1)
-        Assert.assertEquals(LongType(3L), rt + 2L)
+        val lt = LongType(1L)
+        Assert.assertEquals(LongType(2L), lt + lt)
+        Assert.assertEquals(LongType(2L), lt + 1)
+        Assert.assertEquals(LongType(3L), lt + 2L)
 
-        rt += rt
-        Assert.assertEquals(LongType(2L), rt)
+        lt += lt
+        Assert.assertEquals(LongType(2L), lt)
 
-        rt += 2
-        Assert.assertEquals(LongType(4L), rt)
+        lt += 2
+        Assert.assertEquals(LongType(4L), lt)
 
-        rt += 3L
-        Assert.assertEquals(LongType(7L), rt)
+        lt += 3L
+        Assert.assertEquals(LongType(7L), lt)
+    }
+
+    @Test
+    fun testSubtractInteger() {
+        val it = IntType(1)
+        Assert.assertEquals(IntType(0), it - it)
+        Assert.assertEquals(IntType(-1), it - 2)
+        Assert.assertEquals(IntType(-2), it - 3L)
+
+        it -= it
+        Assert.assertEquals(IntType(0), it)
+
+        it -= 2
+        Assert.assertEquals(IntType(-2), it)
+
+        it -= 3L
+        Assert.assertEquals(IntType(-5), it)
+    }
+
+    @Test
+    fun testTimesInteger() {
+        val st = ShortType(1)
+        Assert.assertEquals(ShortType(1), st * st)
+        Assert.assertEquals(ShortType(2), st * 2)
+        Assert.assertEquals(ShortType(3), st * 3L)
+
+        st *= st
+        Assert.assertEquals(ShortType(1), st)
+
+        st *= 2
+        Assert.assertEquals(ShortType(2), st)
+
+        st *= 3L
+        Assert.assertEquals(ShortType(6), st)
+    }
+
+    @Test
+    fun testDivInteger() {
+        val bt = ByteType(10)
+        // Cannot test this as it is shadowed by member RealType.div
+//      Assert.assertEquals(ByteType(1.0), rt / rt)
+        Assert.assertEquals(ByteType(5), bt / 2)
+        Assert.assertEquals(ByteType(3), bt / 3L)
+
+        bt /= bt
+        Assert.assertEquals(ByteType(1), bt)
+
+        bt.set(10)
+        bt /= 2
+        Assert.assertEquals(ByteType(5), bt)
+
+        bt /= 3L
+        Assert.assertEquals(ByteType(1), bt)
     }
 
 }
