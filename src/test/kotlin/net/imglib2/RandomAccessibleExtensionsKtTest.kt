@@ -7,7 +7,6 @@ import net.imglib2.type.numeric.integer.minus
 import net.imglib2.type.numeric.real.DoubleType
 import net.imglib2.type.numeric.real.FloatType
 import net.imglib2.type.numeric.real.divAssign
-import net.imglib2.type.numeric.real.minusAssign
 import net.imglib2.util.Intervals
 import net.imglib2.view.Views
 import org.junit.Assert
@@ -79,6 +78,9 @@ class RandomAccessibleExtensionsKtTest {
             Assert.assertTrue((zeros + IntType(-1)).contentsEqual(-1).all())
             Assert.assertTrue((zeros + 1).contentsEqual(1).all())
             Assert.assertTrue((zeros + 2L).contentsEqual(2).all())
+            Assert.assertTrue((IntType(-1) + zeros).contentsEqual(-1).all())
+            Assert.assertTrue((1 + zeros).contentsEqual(1).all())
+            Assert.assertTrue((2L + zeros).contentsEqual(2).all())
 
             zeros += 1
             Assert.assertTrue(zeros.contentsEqual(1).all())
@@ -86,6 +88,7 @@ class RandomAccessibleExtensionsKtTest {
             Assert.assertTrue(zeros.contentsEqual(3).all())
             zeros += IntType(3)
             Assert.assertTrue(zeros.contentsEqual(6).all())
+
         }
 
         ArrayImgs.floats(1, 2, 3).let { zeros ->
@@ -93,6 +96,9 @@ class RandomAccessibleExtensionsKtTest {
             Assert.assertTrue((zeros + FloatType(-1.0F)).contentsEqual(-1.0).all())
             Assert.assertTrue((zeros + 1.0F).contentsEqual(1.0).all())
             Assert.assertTrue((zeros + 2.0).contentsEqual(2.0).all())
+            Assert.assertTrue((FloatType(-1.0F) + zeros).contentsEqual(-1.0).all())
+            Assert.assertTrue((1.0F + zeros).contentsEqual(1.0).all())
+            Assert.assertTrue((2.0 + zeros).contentsEqual(2.0).all())
 
             zeros += 1.0
             Assert.assertTrue(zeros.contentsEqual(1.0).all())
@@ -123,6 +129,9 @@ class RandomAccessibleExtensionsKtTest {
             Assert.assertTrue((zeros - IntType(-1)).contentsEqual(1).all())
             Assert.assertTrue((zeros - 1).contentsEqual(-1).all())
             Assert.assertTrue((zeros - 2L).contentsEqual(-2).all())
+            Assert.assertTrue((IntType(-1) - zeros).contentsEqual(-1).all())
+            Assert.assertTrue((1 - zeros).contentsEqual(1).all())
+            Assert.assertTrue((2L - zeros).contentsEqual(2).all())
 
             zeros -= 1
             Assert.assertTrue(zeros.contentsEqual(-1).all())
@@ -137,6 +146,9 @@ class RandomAccessibleExtensionsKtTest {
             Assert.assertTrue((zeros - FloatType(-1.0F)).contentsEqual(1.0).all())
             Assert.assertTrue((zeros - 1.0F).contentsEqual(-1.0).all())
             Assert.assertTrue((zeros - 2.0).contentsEqual(-2.0).all())
+            Assert.assertTrue((FloatType(-1.0F) - zeros).contentsEqual(-1.0).all())
+            Assert.assertTrue((1.0F - zeros).contentsEqual(1.0).all())
+            Assert.assertTrue((2.0 - zeros).contentsEqual(2.0).all())
 
             zeros -= 1.0
             Assert.assertTrue(zeros.contentsEqual(-1.0).all())
@@ -165,6 +177,9 @@ class RandomAccessibleExtensionsKtTest {
             Assert.assertTrue((ones * IntType(-1)).contentsEqual(-1).all())
             Assert.assertTrue((ones * 3).contentsEqual(3).all())
             Assert.assertTrue((ones * 2L).contentsEqual(2).all())
+            Assert.assertTrue((IntType(-1) * ones).contentsEqual(-1).all())
+            Assert.assertTrue((3 * ones).contentsEqual(3).all())
+            Assert.assertTrue((2L * ones).contentsEqual(2).all())
 
             ones *= 1
             Assert.assertTrue(ones.contentsEqual(1).all())
@@ -179,6 +194,9 @@ class RandomAccessibleExtensionsKtTest {
             Assert.assertTrue((ones * FloatType(-1.0F)).contentsEqual(-1.0).all())
             Assert.assertTrue((ones * 3.0F).contentsEqual(3.0).all())
             Assert.assertTrue((ones * Math.PI).contentsEqual(Math.PI).all())
+            Assert.assertTrue((FloatType(-1.0F) * ones).contentsEqual(-1.0).all())
+            Assert.assertTrue((3F * ones).contentsEqual(3.0).all())
+            Assert.assertTrue((Math.PI * ones).contentsEqual(Math.PI).all())
 
             ones *= 1.0
             Assert.assertTrue(ones.contentsEqual(1.0).all())
@@ -209,6 +227,9 @@ class RandomAccessibleExtensionsKtTest {
             Assert.assertTrue((tens / IntType(-1)).contentsEqual(-10).all())
             Assert.assertTrue((tens / 2).contentsEqual(5).all())
             Assert.assertTrue((tens / 3L).contentsEqual(3).all())
+            Assert.assertTrue((IntType(-10) / tens).contentsEqual(-1).all())
+            Assert.assertTrue((56 / tens).contentsEqual(5).all())
+            Assert.assertTrue((30L / tens).contentsEqual(3).all())
 
             tens /= 2
             Assert.assertTrue(tens.contentsEqual(5).all())
@@ -223,6 +244,10 @@ class RandomAccessibleExtensionsKtTest {
             Assert.assertTrue((ones / FloatType(-1.0F)).contentsEqual(-1.0).all())
             Assert.assertTrue((ones / 3.0F).contentsEqual(1.0 / 3.0).all())
             Assert.assertTrue((ones / 2.0).contentsEqual(0.5).all())
+            Assert.assertTrue((FloatType(-1.0F) / ones).contentsEqual(-1.0).all())
+            Assert.assertTrue((3.0F / ones).contentsEqual(3.0).all())
+            Assert.assertTrue((2.0 / ones).contentsEqual(2.0).all())
+
 
             ones /= -2.0
             Assert.assertTrue(ones.contentsEqual(-0.5).all())

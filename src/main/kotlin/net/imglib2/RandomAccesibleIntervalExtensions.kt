@@ -19,6 +19,7 @@ import net.imglib2.type.numeric.real.minusAssign
 import net.imglib2.type.numeric.real.plusAssign
 import net.imglib2.type.numeric.real.timesAssign
 import net.imglib2.type.operators.ValueEquals
+import net.imglib2.util.ConstantUtils
 import net.imglib2.util.Intervals
 import net.imglib2.util.Util
 import net.imglib2.view.Views
@@ -93,6 +94,14 @@ operator fun <T: RealType<T>> RandomAccessibleInterval<T>.plus(value: T) = copy(
 operator fun <T: RealType<T>> RandomAccessibleInterval<T>.plus(value: Float) = plus(createType(value))
 operator fun <T: RealType<T>> RandomAccessibleInterval<T>.plus(value: Double) = plus(createType(value))
 
+operator fun <T: IntegerType<T>> T.plus(rai: RandomAccessibleInterval<T>) = rai.copy().let {it.iterable().forEach { it += this }; it}
+operator fun <T: IntegerType<T>> Int.plus(rai: RandomAccessibleInterval<T>) = rai.createType(this) + rai
+operator fun <T: IntegerType<T>> Long.plus(rai: RandomAccessibleInterval<T>) = rai.createType(this) + rai
+
+operator fun <T: RealType<T>> T.plus(rai: RandomAccessibleInterval<T>) = rai.copy().let {it.iterable().forEach { it += this }; it}
+operator fun <T: RealType<T>> Float.plus(rai: RandomAccessibleInterval<T>) = rai.createType(this) + rai
+operator fun <T: RealType<T>> Double.plus(rai: RandomAccessibleInterval<T>) = rai.createType(this) + rai
+
 // minus
 operator fun <T: IntegerType<T>> RandomAccessibleInterval<T>.minusAssign(value: T) = iterable().forEach { it -= value }
 operator fun <T: IntegerType<T>> RandomAccessibleInterval<T>.minusAssign(value: Int) = minusAssign(createType(value))
@@ -107,6 +116,14 @@ operator fun <T: RealType<T>> RandomAccessibleInterval<T>.minusAssign(value: Dou
 operator fun <T: RealType<T>> RandomAccessibleInterval<T>.minus(value: T) = copy().let{ it.iterable().forEach { it -= value }; it }
 operator fun <T: RealType<T>> RandomAccessibleInterval<T>.minus(value: Float) = minus(createType(value))
 operator fun <T: RealType<T>> RandomAccessibleInterval<T>.minus(value: Double) = minus(createType(value))
+
+operator fun <T: IntegerType<T>> T.minus(rai: RandomAccessibleInterval<T>) = ConstantUtils.constantRandomAccessibleInterval(this, rai.numDimensions(), rai) - rai
+operator fun <T: IntegerType<T>> Int.minus(rai: RandomAccessibleInterval<T>) = rai.createType(this) - rai
+operator fun <T: IntegerType<T>> Long.minus(rai: RandomAccessibleInterval<T>) = rai.createType(this) - rai
+
+operator fun <T: RealType<T>> T.minus(rai: RandomAccessibleInterval<T>) = ConstantUtils.constantRandomAccessibleInterval(this, rai.numDimensions(), rai) - rai
+operator fun <T: RealType<T>> Float.minus(rai: RandomAccessibleInterval<T>) = rai.createType(this) - rai
+operator fun <T: RealType<T>> Double.minus(rai: RandomAccessibleInterval<T>) = rai.createType(this) - rai
 
 // times
 operator fun <T: IntegerType<T>> RandomAccessibleInterval<T>.timesAssign(value: T) = iterable().forEach { it *= value }
@@ -123,6 +140,14 @@ operator fun <T: RealType<T>> RandomAccessibleInterval<T>.times(value: T) = copy
 operator fun <T: RealType<T>> RandomAccessibleInterval<T>.times(value: Float) = times(createType(value))
 operator fun <T: RealType<T>> RandomAccessibleInterval<T>.times(value: Double) = times(createType(value))
 
+operator fun <T: IntegerType<T>> T.times(rai: RandomAccessibleInterval<T>) = rai.copy().let {it.iterable().forEach { it *= this }; it}
+operator fun <T: IntegerType<T>> Int.times(rai: RandomAccessibleInterval<T>) = rai.createType(this) * rai
+operator fun <T: IntegerType<T>> Long.times(rai: RandomAccessibleInterval<T>) = rai.createType(this) * rai
+
+operator fun <T: RealType<T>> T.times(rai: RandomAccessibleInterval<T>) = rai.copy().let {it.iterable().forEach { it *= this }; it}
+operator fun <T: RealType<T>> Float.times(rai: RandomAccessibleInterval<T>) = rai.createType(this) * rai
+operator fun <T: RealType<T>> Double.times(rai: RandomAccessibleInterval<T>) = rai.createType(this) * rai
+
 // div
 operator fun <T: IntegerType<T>> RandomAccessibleInterval<T>.divAssign(value: T) = iterable().forEach { it /= value }
 operator fun <T: IntegerType<T>> RandomAccessibleInterval<T>.divAssign(value: Int) = divAssign(createType(value))
@@ -137,6 +162,14 @@ operator fun <T: RealType<T>> RandomAccessibleInterval<T>.divAssign(value: Doubl
 operator fun <T: RealType<T>> RandomAccessibleInterval<T>.div(value: T) = copy().let{ it.iterable().forEach { it /= value }; it }
 operator fun <T: RealType<T>> RandomAccessibleInterval<T>.div(value: Float) = div(createType(value))
 operator fun <T: RealType<T>> RandomAccessibleInterval<T>.div(value: Double) = div(createType(value))
+
+operator fun <T: IntegerType<T>> T.div(rai: RandomAccessibleInterval<T>) = ConstantUtils.constantRandomAccessibleInterval(this, rai.numDimensions(), rai) / rai
+operator fun <T: IntegerType<T>> Int.div(rai: RandomAccessibleInterval<T>) = rai.createType(this) / rai
+operator fun <T: IntegerType<T>> Long.div(rai: RandomAccessibleInterval<T>) = rai.createType(this) / rai
+
+operator fun <T: RealType<T>> T.div(rai: RandomAccessibleInterval<T>) = ConstantUtils.constantRandomAccessibleInterval(this, rai.numDimensions(), rai) / rai
+operator fun <T: RealType<T>> Float.div(rai: RandomAccessibleInterval<T>) = rai.createType(this) / rai
+operator fun <T: RealType<T>> Double.div(rai: RandomAccessibleInterval<T>) = rai.createType(this) / rai
 
 fun <T> RandomAccessibleInterval<T>.minAsLongs() = Intervals.minAsLongArray(this)
 fun <T> RandomAccessibleInterval<T>.maxAsLongs() = Intervals.maxAsLongArray(this)
