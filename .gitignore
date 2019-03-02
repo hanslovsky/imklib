@@ -10,3 +10,4 @@
 /target
 *.swp
 *_completion
+.attach_pid*
