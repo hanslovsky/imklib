@@ -13,6 +13,7 @@ import net.imglib2.type.numeric.integer.divAssign
 import net.imglib2.type.numeric.integer.minusAssign
 import net.imglib2.type.numeric.integer.plusAssign
 import net.imglib2.type.numeric.integer.timesAssign
+import net.imglib2.type.numeric.real.DoubleType
 import net.imglib2.type.numeric.real.createVariable
 import net.imglib2.type.numeric.real.divAssign
 import net.imglib2.type.numeric.real.minusAssign
@@ -24,6 +25,7 @@ import net.imglib2.util.Intervals
 import net.imglib2.util.Util
 import net.imglib2.view.Views
 import java.util.function.BiConsumer
+import java.util.function.DoubleUnaryOperator
 import java.util.function.Predicate
 
 
@@ -188,7 +190,6 @@ fun <T: RealType<T>> RandomAccessibleInterval<T>.createType(value: Double) = get
 fun <T: IntegerType<T>> RandomAccessibleInterval<T>.createType(value: Int) = getType().createVariable(value)
 fun <T: IntegerType<T>> RandomAccessibleInterval<T>.createType(value: Long) = getType().createVariable(value)
 
-
 fun <T: Type<T>> RandomAccessibleInterval<T>.factory() = Util.getSuitableImgFactory(this, createType())
 fun <T: Type<T>> RandomAccessibleInterval<T>.copy(): RandomAccessibleInterval<T> {
     val copy = factory().create(this).let{ if (isZeroMin()) it else Views.translate(it, *this.minAsLongs()) as RandomAccessibleInterval<T> }
@@ -217,3 +218,15 @@ fun <B: BooleanType<B>> RandomAccessibleInterval<B>.any() = any {it.get()}
 
 fun <T> RandomAccessibleInterval<T>.iterable() = Views.iterable(this)
 fun <T> RandomAccessibleInterval<T>.flatIterable() = Views.flatIterable(this)
+
+// TODO should these create copies or views?
+operator fun <B: BooleanType<B>> RandomAccessibleInterval<B>.not() = Converters.convert(this, {s, t -> t.set(!s.get())}, createType())
+operator fun <T: Type<T>> RandomAccessibleInterval<T>.unaryPlus()= Converters.convert(this, { s, t -> t.set(s) }, createType())
+operator fun <T: NumericType<T>> RandomAccessibleInterval<T>.unaryMinus() = Converters.convert(this, { s, t -> t.set(s); t.mul(-1.0) }, createType())
+
+// TODO should these create copies or views?
+fun <T: RealType<T>, U: RealType<U>> RandomAccessibleInterval<T>.apply(func: DoubleUnaryOperator, dtype: U) = Converters.convert(this, { s, t -> t.setReal(func.applyAsDouble(s.realDouble))}, dtype).copy()
+fun <T: RealType<T>> RandomAccessibleInterval<T>.apply(func: DoubleUnaryOperator) = apply(func, DoubleType())
+
+fun <T: RealType<T>, U: RealType<U>> RandomAccessibleInterval<T>.exp(dtype: U) = apply(DoubleUnaryOperator{ Math.exp(it) }, dtype)
+fun <T: RealType<T>> RandomAccessibleInterval<T>.exp() = exp(DoubleType())

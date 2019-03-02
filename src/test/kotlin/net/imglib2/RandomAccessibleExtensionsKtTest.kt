@@ -2,6 +2,7 @@ package net.imglib2
 
 import net.imglib2.converter.Converters
 import net.imglib2.img.array.ArrayImgs
+import net.imglib2.type.logic.BitType
 import net.imglib2.type.numeric.integer.IntType
 import net.imglib2.type.numeric.integer.minus
 import net.imglib2.type.numeric.real.DoubleType
@@ -11,6 +12,7 @@ import net.imglib2.util.Intervals
 import net.imglib2.view.Views
 import org.junit.Assert
 import org.junit.Test
+import java.util.function.DoubleUnaryOperator
 import java.util.function.Predicate
 import kotlin.random.Random
 
@@ -256,6 +258,28 @@ class RandomAccessibleExtensionsKtTest {
             ones /= FloatType(-4.0F)
             Assert.assertTrue(ones.contentsEqual(0.5 / 3.0 / 4.0).all())
         }
+    }
+
+    @Test
+    fun unaryOpsTest() {
+        val rng = Random(100L)
+        val img = ArrayImgs.ints(1, 2, 3) as RandomAccessibleInterval<IntType>
+        img.iterable().forEach { it.setInteger(rng.nextInt(1, 10).toLong()) }
+        Assert.assertFalse(img.contentsEqual(0).any())
+        Assert.assertTrue(Converters.convert(img, { s, t -> t.integer = +s.integer }, IntType()).contentsEqual(+img).all())
+        Assert.assertTrue(Converters.convert(img, { s, t -> t.integer = -s.integer }, IntType()).contentsEqual(-img).all())
+        val thresholded = Converters.convert(img, { s, t -> t.set(s.integer > 5) }, BitType())
+        Assert.assertFalse(thresholded.contentsEqual(thresholded.not()).any())
+    }
+
+    @Test
+    fun funcTest() {
+        val rng = Random(100L)
+        val X = DoubleArray(100, {rng.nextDouble()})
+        val img = ArrayImgs.doubles(X, X.size.toLong())
+        Assert.assertFalse(img.contentsEqual(0.0).all())
+        Assert.assertArrayEquals(X.map { Math.exp(it) }.toDoubleArray(), img.exp().iterable().map { it.realDouble }.toDoubleArray(), 0.0)
+        Assert.assertArrayEquals(X.map { Math.sqrt(it) }.toDoubleArray(), img.apply(DoubleUnaryOperator { Math.sqrt(it) }).iterable().map { it.realDouble }.toDoubleArray(), 0.0)
     }
 
 }
