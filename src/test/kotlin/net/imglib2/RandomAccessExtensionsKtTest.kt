@@ -1,6 +1,7 @@
 package net.imglib2
 
 import net.imglib2.img.array.ArrayImgs
+import net.imglib2.util.Intervals
 import net.imglib2.view.Views
 import org.junit.Assert
 import org.junit.Test
@@ -36,6 +37,17 @@ class RandomAccessExtensionsKtTest {
             Assert.assertEquals(expected, extended.get(img, *pos))
             Assert.assertEquals(expected, extended.get(img, *intPos))
         }
+    }
+
+    @Test
+    fun minMaxTest() {
+        val img = Views.translate(ArrayImgs.doubles(1, 2, 3), 1, 2, 3)
+        Assert.assertArrayEquals(Intervals.minAsLongArray(img), img.minAsLongs())
+        Assert.assertArrayEquals(Intervals.maxAsLongArray(img), img.maxAsLongs())
+        Assert.assertArrayEquals(Intervals.minAsIntArray(img), img.minAsInts())
+        Assert.assertArrayEquals(Intervals.maxAsIntArray(img), img.maxAsInts())
+        Assert.assertEquals(Point(*Intervals.minAsLongArray(img)), img.minAsPoint())
+        Assert.assertEquals(Point(*Intervals.maxAsLongArray(img)), img.maxAsPoint())
     }
 
 }
