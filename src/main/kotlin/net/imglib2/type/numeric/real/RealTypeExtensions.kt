@@ -55,3 +55,6 @@ operator fun <T: RealType<T>> T.div(value: Float): T = copy().let { it /= value;
 operator fun <T: RealType<T>> T.div(value: Double): T = copy().let { it /= value; it }
 operator fun <T: RealType<T>> Float.div(value: T): T = value.createVariable(this).let { it /= value; it }
 operator fun <T: RealType<T>> Double.div(value: T): T = value.createVariable(this).let { it /= value; it }
+
+operator fun <T: RealType<T>> T.unaryPlus() = copy()
+operator fun <T: RealType<T>> T.unaryMinus() = -1.0 * this

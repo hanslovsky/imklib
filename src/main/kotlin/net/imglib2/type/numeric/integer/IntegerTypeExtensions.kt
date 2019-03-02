@@ -54,3 +54,6 @@ operator fun <T: IntegerType<T>> T.div(value: Int): T = copy().let { it /= value
 operator fun <T: IntegerType<T>> T.div(value: Long): T = copy().let { it /= value; it }
 operator fun <T: IntegerType<T>> Int.div(value: T): T = value.createVariable(this).let { it /= value; it }
 operator fun <T: IntegerType<T>> Long.div(value: T): T = value.createVariable(this).let { it /= value; it }
+
+operator fun <T: IntegerType<T>> T.unaryPlus() = copy()
+operator fun <T: IntegerType<T>> T.unaryMinus() = -1 * this

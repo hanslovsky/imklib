@@ -12,6 +12,8 @@ import net.imglib2.type.numeric.integer.plus
 import net.imglib2.type.numeric.integer.plusAssign
 import net.imglib2.type.numeric.integer.times
 import net.imglib2.type.numeric.integer.timesAssign
+import net.imglib2.type.numeric.integer.unaryMinus
+import net.imglib2.type.numeric.integer.unaryPlus
 import net.imglib2.type.numeric.real.DoubleType
 import net.imglib2.type.numeric.real.div
 import net.imglib2.type.numeric.real.divAssign
@@ -21,6 +23,8 @@ import net.imglib2.type.numeric.real.plus
 import net.imglib2.type.numeric.real.plusAssign
 import net.imglib2.type.numeric.real.times
 import net.imglib2.type.numeric.real.timesAssign
+import net.imglib2.type.numeric.real.unaryMinus
+import net.imglib2.type.numeric.real.unaryPlus
 import org.junit.Assert
 import org.junit.Test
 
@@ -179,6 +183,14 @@ class TypeExtensionsKtTest {
 
         bt /= 3L
         Assert.assertEquals(ByteType(1), bt)
+    }
+
+    @Test
+    fun testUnaryPlusMinus() {
+        Assert.assertEquals(DoubleType(1.0), +DoubleType(1.0))
+        Assert.assertEquals(DoubleType(1.0), -DoubleType(-1.0))
+        Assert.assertEquals(IntType(1), +IntType(1))
+        Assert.assertEquals(IntType(1), -IntType(-1))
     }
 
 }
