@@ -1,7 +1,8 @@
-package net.imglib2
+package net.imglib2.img
 
-import net.imglib2.img.Img
+import net.imglib2.RandomAccessibleInterval
 import net.imglib2.loops.LoopBuilder
+import net.imglib2.plusAssign
 import net.imglib2.type.numeric.NumericType
 import java.util.function.BiConsumer
 
