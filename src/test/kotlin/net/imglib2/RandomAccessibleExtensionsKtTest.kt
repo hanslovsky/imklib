@@ -3,7 +3,9 @@ package net.imglib2
 import net.imglib2.converter.Converters
 import net.imglib2.img.array.ArrayImgs
 import net.imglib2.type.numeric.integer.IntType
+import net.imglib2.type.numeric.integer.LongType
 import net.imglib2.type.numeric.real.DoubleType
+import net.imglib2.type.numeric.real.FloatType
 import net.imglib2.util.Intervals
 import net.imglib2.view.Views
 import org.junit.Assert
@@ -69,6 +71,35 @@ class RandomAccessibleExtensionsKtTest {
         Assert.assertTrue(sum1.contentsEqual(sum2).all())
         Assert.assertFalse(sum1.contentsEqual(0).any())
         Assert.assertTrue(sum1.contentsEqual(Converters.convert(img, {s, t -> t.set(2*s.get())}, IntType())).all())
+
+        ArrayImgs.ints(1, 2, 3).let { zeros ->
+            Assert.assertTrue(zeros.contentsEqual(0).all())
+            Assert.assertTrue((zeros + IntType(-1)).contentsEqual(-1).all())
+            Assert.assertTrue((zeros + 1).contentsEqual(1).all())
+            Assert.assertTrue((zeros + 2L).contentsEqual(2).all())
+
+            zeros += 1
+            Assert.assertTrue(zeros.contentsEqual(1).all())
+            zeros += 2L
+            Assert.assertTrue(zeros.contentsEqual(3).all())
+            zeros += IntType(3)
+            Assert.assertTrue(zeros.contentsEqual(6).all())
+        }
+
+        ArrayImgs.floats(1, 2, 3).let { zeros ->
+            Assert.assertTrue(zeros.contentsEqual(0.0F).all())
+            Assert.assertTrue((zeros + FloatType(-1.0F)).contentsEqual(-1.0).all())
+            Assert.assertTrue((zeros + 1.0F).contentsEqual(1.0).all())
+            Assert.assertTrue((zeros + 2.0).contentsEqual(2.0).all())
+
+            zeros += 1.0
+            Assert.assertTrue(zeros.contentsEqual(1.0).all())
+            zeros += 2.0F
+            Assert.assertTrue(zeros.contentsEqual(3.0).all())
+            zeros += FloatType(3.0F)
+            Assert.assertTrue(zeros.contentsEqual(6.0).all())
+        }
+
     }
 
 }

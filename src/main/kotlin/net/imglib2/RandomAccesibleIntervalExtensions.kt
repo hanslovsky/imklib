@@ -15,8 +15,10 @@ import net.imglib2.view.Views
 import java.util.function.BiConsumer
 import java.util.function.Predicate
 
-import net.imglib2.type.numeric.real.createVariable
 import net.imglib2.type.numeric.integer.createVariable
+import net.imglib2.type.numeric.integer.plusAssign
+import net.imglib2.type.numeric.real.createVariable
+import net.imglib2.type.numeric.real.plusAssign
 
 
 operator fun <T: NumericType<T>> RandomAccessibleInterval<T>.plusAssign(other: RandomAccessibleInterval<T>) {
@@ -30,6 +32,20 @@ operator fun <T: NumericType<T>> RandomAccessibleInterval<T>.plus(other: RandomA
     copy += other
     return if (isZeroMin()) copy else Views.translate(copy, *this.minAsLongs())
 }
+
+operator fun <T: IntegerType<T>> RandomAccessibleInterval<T>.plusAssign(value: T) = iterable().forEach { it += value }
+operator fun <T: IntegerType<T>> RandomAccessibleInterval<T>.plusAssign(value: Int) = plusAssign(createType(value))
+operator fun <T: IntegerType<T>> RandomAccessibleInterval<T>.plusAssign(value: Long) = plusAssign(createType(value))
+operator fun <T: IntegerType<T>> RandomAccessibleInterval<T>.plus(value: T) = copy().let {it.iterable().forEach { it += value }; it}
+operator fun <T: IntegerType<T>> RandomAccessibleInterval<T>.plus(value: Int) = plus(createType(value))
+operator fun <T: IntegerType<T>> RandomAccessibleInterval<T>.plus(value: Long) = plus(createType(value))
+
+operator fun <T: RealType<T>> RandomAccessibleInterval<T>.plusAssign(value: T) = iterable().forEach { it += value }
+operator fun <T: RealType<T>> RandomAccessibleInterval<T>.plusAssign(value: Float) = plusAssign(createType(value))
+operator fun <T: RealType<T>> RandomAccessibleInterval<T>.plusAssign(value: Double) = plusAssign(createType(value))
+operator fun <T: RealType<T>> RandomAccessibleInterval<T>.plus(value: T) = copy().let{ it.iterable().forEach { it += value }; it }
+operator fun <T: RealType<T>> RandomAccessibleInterval<T>.plus(value: Float) = plus(createType(value))
+operator fun <T: RealType<T>> RandomAccessibleInterval<T>.plus(value: Double) = plus(createType(value))
 
 fun <T> RandomAccessibleInterval<T>.minAsLongs() = Intervals.minAsLongArray(this)
 fun <T> RandomAccessibleInterval<T>.maxAsLongs() = Intervals.maxAsLongArray(this)
