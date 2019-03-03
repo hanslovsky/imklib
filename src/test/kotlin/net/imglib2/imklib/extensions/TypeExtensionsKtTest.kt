@@ -4,27 +4,7 @@ import net.imglib2.type.numeric.integer.ByteType
 import net.imglib2.type.numeric.integer.IntType
 import net.imglib2.type.numeric.integer.LongType
 import net.imglib2.type.numeric.integer.ShortType
-import net.imglib2.imklib.extensions.type.numeric.integer.div
-import net.imglib2.imklib.extensions.type.numeric.integer.divAssign
-import net.imglib2.imklib.extensions.type.numeric.integer.minus
-import net.imglib2.imklib.extensions.type.numeric.integer.minusAssign
-import net.imglib2.imklib.extensions.type.numeric.integer.plus
-import net.imglib2.imklib.extensions.type.numeric.integer.plusAssign
-import net.imglib2.imklib.extensions.type.numeric.integer.times
-import net.imglib2.imklib.extensions.type.numeric.integer.timesAssign
-import net.imglib2.imklib.extensions.type.numeric.integer.unaryMinus
-import net.imglib2.imklib.extensions.type.numeric.integer.unaryPlus
 import net.imglib2.type.numeric.real.DoubleType
-import net.imglib2.imklib.extensions.type.numeric.real.div
-import net.imglib2.imklib.extensions.type.numeric.real.divAssign
-import net.imglib2.imklib.extensions.type.numeric.real.minus
-import net.imglib2.imklib.extensions.type.numeric.real.minusAssign
-import net.imglib2.imklib.extensions.type.numeric.real.plus
-import net.imglib2.imklib.extensions.type.numeric.real.plusAssign
-import net.imglib2.imklib.extensions.type.numeric.real.times
-import net.imglib2.imklib.extensions.type.numeric.real.timesAssign
-import net.imglib2.imklib.extensions.type.numeric.real.unaryMinus
-import net.imglib2.imklib.extensions.type.numeric.real.unaryPlus
 import org.junit.Assert
 import org.junit.Test
 

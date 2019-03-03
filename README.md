@@ -2,7 +2,7 @@
 
 Experimental Kotlin extension functions for [imglib2](https://github.com/imglib/imglib2)
 
-For details, check source code, tests, and [example](https://github.com/hanslovsky/imklib/blob/a727d07d29c9008e68f3df43ce42856630bb9c4f/src/test/kotlin/net/imglib2/imklib/examples/Plot.kt):
+For details, check source code, tests, and [example](https://github.com/hanslovsky/imklib/blob/master/src/test/kotlin/net/imglib2/imklib/examples/Plot.kt):
 
 ```kotlin
 package net.imglib2.imklib.examples
@@ -56,7 +56,6 @@ import kotlin.random.Random
 import net.imglib2.img.array.ArrayImgs
 import net.imglib2.RandomAccessibleInterval
 import net.imglib2.imklib.extensions.*
-import net.imglib2.imklib.extensions.type.numeric.real.*
 val img = ArrayImgs.doubles(1, 2, 3)
 
 fun raiFlatToString(rai: RandomAccessibleInterval<*>) = rai.iterable().joinToString(", ", prefix="${rai::class.java.simpleName}[", postfix="]")

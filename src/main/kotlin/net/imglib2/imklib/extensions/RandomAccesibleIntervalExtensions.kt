@@ -8,17 +8,7 @@ import net.imglib2.type.logic.BitType
 import net.imglib2.type.numeric.IntegerType
 import net.imglib2.type.numeric.NumericType
 import net.imglib2.type.numeric.RealType
-import net.imglib2.imklib.extensions.type.numeric.integer.createVariable
-import net.imglib2.imklib.extensions.type.numeric.integer.divAssign
-import net.imglib2.imklib.extensions.type.numeric.integer.minusAssign
-import net.imglib2.imklib.extensions.type.numeric.integer.plusAssign
-import net.imglib2.imklib.extensions.type.numeric.integer.timesAssign
 import net.imglib2.type.numeric.real.DoubleType
-import net.imglib2.imklib.extensions.type.numeric.real.createVariable
-import net.imglib2.imklib.extensions.type.numeric.real.divAssign
-import net.imglib2.imklib.extensions.type.numeric.real.minusAssign
-import net.imglib2.imklib.extensions.type.numeric.real.plusAssign
-import net.imglib2.imklib.extensions.type.numeric.real.timesAssign
 import net.imglib2.Point
 import net.imglib2.RandomAccessibleInterval
 import net.imglib2.type.operators.ValueEquals
