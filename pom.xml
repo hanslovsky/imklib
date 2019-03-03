@@ -7,8 +7,8 @@
 		<version>25.0.0</version>
 	</parent>
 
-	<groupId>de.hanslovsky</groupId>
-	<artifactId>imglib2-kotlib</artifactId>
+	<groupId>net.imglib2</groupId>
+	<artifactId>imklib</artifactId>
 	<version>0.1.1-SNAPSHOT</version>
 
 	<name>ImgLib2 Kotlin</name>
