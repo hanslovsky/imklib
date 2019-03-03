@@ -41,3 +41,36 @@ fun main() {
 
 }
 ```
+
+Or, run this with [`kscript`](https://github.com/holgerbrandl/kscript):
+
+``` kotlin
+#!/usr/bin/env kscript
+
+@file:MavenRepository("imagej.public", "https://maven.imagej.net/content/groups/public")
+@file:DependsOn("net.imglib2:imglib2:5.6.4-SNAPSHOT")
+@file:DependsOn("de.hanslovsky:imglib2-kotlib:0.1.1-SNAPSHOT")
+
+import kotlin.math.sqrt
+import kotlin.random.Random
+import net.imglib2.img.array.ArrayImgs
+import net.imglib2.*
+import net.imglib2.type.numeric.real.*
+val img = ArrayImgs.doubles(1, 2, 3)
+
+fun raiFlatToString(rai: RandomAccessibleInterval<*>) = rai.iterable().joinToString(", ", prefix="${rai::class.java.simpleName}[", postfix="]")
+
+println(raiFlatToString(img))
+img += 3.0
+println(raiFlatToString(img))
+val img2 = Random(100L).let { rng -> img.copy().let {copy -> copy.iterable().forEach {it.timesAssign(rng.nextDouble())}; copy}}
+img[0, 1, 2].set(Double.NaN)
+println(raiFlatToString(img))
+println(raiFlatToString(img2))
+println(raiFlatToString(-img2))
+// these will only work with next imligb2 release (>5.6.3)
+println(raiFlatToString(img2 / img))
+println(raiFlatToString(img2.exp()))
+println(raiFlatToString(img2.apply({sqrt(it)})))
+```
+
