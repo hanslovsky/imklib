@@ -1,6 +1,6 @@
 package net.imglib2.imklib.examples
 
-// import net.imglib2.* for RAI extensions
+// import net.imglib2.imklib.extensions.* for RAI extensions
 import net.imglib2.imklib.extensions.div
 import net.imglib2.imklib.extensions.exp
 import net.imglib2.img.array.ArrayImgs
