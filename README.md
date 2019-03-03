@@ -2,7 +2,7 @@
 
 Experimental Kotlin extension functions for [imglib2](https://github.com/imglib/imglib2)
 
-For details, check source code, tests, and [example](https://github.com/hanslovsky/imglib2-kotlib/blob/1bb92a3227dbb320ca3af47a47d3fa222a453f3e/src/test/kotlin/net/imglib2/examples/Plot.kt):
+For details, check source code, tests, and [example](https://github.com/hanslovsky/imglib2-kotlib/blob/a727d07d29c9008e68f3df43ce42856630bb9c4f/src/test/kotlin/net/imglib2/imklib/examples/Plot.kt):
 
 ```kotlin
 package net.imglib2.imklib.examples
