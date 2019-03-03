@@ -228,5 +228,8 @@ operator fun <T: NumericType<T>> RandomAccessibleInterval<T>.unaryMinus() = Conv
 fun <T: RealType<T>, U: RealType<U>> RandomAccessibleInterval<T>.apply(func: DoubleUnaryOperator, dtype: U) = Converters.convert(this, { s, t -> t.setReal(func.applyAsDouble(s.realDouble))}, dtype).copy()
 fun <T: RealType<T>> RandomAccessibleInterval<T>.apply(func: DoubleUnaryOperator) = apply(func, DoubleType())
 
+fun <T: RealType<T>, U: RealType<U>> RandomAccessibleInterval<T>.apply(func: (Double) -> Double, dtype: U) = apply(DoubleUnaryOperator { func(it) }, dtype)
+fun <T: RealType<T>> RandomAccessibleInterval<T>.apply(func: (Double) -> Double) = apply(func, DoubleType())
+
 fun <T: RealType<T>, U: RealType<U>> RandomAccessibleInterval<T>.exp(dtype: U) = apply(DoubleUnaryOperator{ Math.exp(it) }, dtype)
 fun <T: RealType<T>> RandomAccessibleInterval<T>.exp() = exp(DoubleType())
