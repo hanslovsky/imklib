@@ -13,7 +13,7 @@
 
 	<name>ImgLib2 Kotlin</name>
 	<description>Kotlin extensions for imglib2</description>
-	<url>https://github.com/hanslovsky/imglib2-kotlib</url>
+	<url>https://github.com/hanslovsky/imklib</url>
 	<inceptionYear>2019</inceptionYear>
 	<!-- <organization>saalfeldlab</organization> -->
 	<organization>
@@ -58,18 +58,18 @@
 	</contributors>
 
 	<scm>
-		<connection>scm:git:git://github.com/hanslovsky/imglib2-kotlib</connection>
-		<developerConnection>scm:git:git@github.com:hanslovsky/imglib2-kotlib</developerConnection>
+		<connection>scm:git:git://github.com/hanslovsky/imklib</connection>
+		<developerConnection>scm:git:git@github.com:hanslovsky/imklib</developerConnection>
 		<tag>HEAD</tag>
-		<url>https://github.com/hanslovsky/imglib2-kotlib</url>
+		<url>https://github.com/hanslovsky/imklib</url>
 	</scm>
 	<issueManagement>
 		<system>GitHub Issues</system>
-		<url>https://github.com/hanslovsky/imglib2-kotlib/issues</url>
+		<url>https://github.com/hanslovsky/imklib/issues</url>
 	</issueManagement>
 	<ciManagement>
 		<system>Travis CI</system>
-		<url>https://travis-ci.org/hanslovsky/imglib2-kotlib</url>
+		<url>https://travis-ci.org/hanslovsky/imklib</url>
 	</ciManagement>
 
 
