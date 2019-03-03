@@ -1,5 +1,13 @@
-package net.imglib2
+package net.imglib2.imklib.extensions
 
+import net.imglib2.Point
+import net.imglib2.imklib.extensions.get
+import net.imglib2.imklib.extensions.maxAsInts
+import net.imglib2.imklib.extensions.maxAsLongs
+import net.imglib2.imklib.extensions.maxAsPoint
+import net.imglib2.imklib.extensions.minAsInts
+import net.imglib2.imklib.extensions.minAsLongs
+import net.imglib2.imklib.extensions.minAsPoint
 import net.imglib2.img.array.ArrayImgs
 import net.imglib2.util.Intervals
 import net.imglib2.view.Views

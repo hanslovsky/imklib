@@ -1,4 +1,4 @@
-package net.imglib2
+package net.imglib2.imklib.extensions
 
 import net.imglib2.converter.Converters
 import net.imglib2.loops.LoopBuilder
@@ -8,20 +8,23 @@ import net.imglib2.type.logic.BitType
 import net.imglib2.type.numeric.IntegerType
 import net.imglib2.type.numeric.NumericType
 import net.imglib2.type.numeric.RealType
-import net.imglib2.type.numeric.integer.createVariable
-import net.imglib2.type.numeric.integer.divAssign
-import net.imglib2.type.numeric.integer.minusAssign
-import net.imglib2.type.numeric.integer.plusAssign
-import net.imglib2.type.numeric.integer.timesAssign
+import net.imglib2.imklib.extensions.type.numeric.integer.createVariable
+import net.imglib2.imklib.extensions.type.numeric.integer.divAssign
+import net.imglib2.imklib.extensions.type.numeric.integer.minusAssign
+import net.imglib2.imklib.extensions.type.numeric.integer.plusAssign
+import net.imglib2.imklib.extensions.type.numeric.integer.timesAssign
 import net.imglib2.type.numeric.real.DoubleType
-import net.imglib2.type.numeric.real.createVariable
-import net.imglib2.type.numeric.real.divAssign
-import net.imglib2.type.numeric.real.minusAssign
-import net.imglib2.type.numeric.real.plusAssign
-import net.imglib2.type.numeric.real.timesAssign
+import net.imglib2.imklib.extensions.type.numeric.real.createVariable
+import net.imglib2.imklib.extensions.type.numeric.real.divAssign
+import net.imglib2.imklib.extensions.type.numeric.real.minusAssign
+import net.imglib2.imklib.extensions.type.numeric.real.plusAssign
+import net.imglib2.imklib.extensions.type.numeric.real.timesAssign
+import net.imglib2.Point
+import net.imglib2.RandomAccessibleInterval
 import net.imglib2.type.operators.ValueEquals
 import net.imglib2.util.ConstantUtils
 import net.imglib2.util.Intervals
+import net.imglib2.util.Pair
 import net.imglib2.util.Util
 import net.imglib2.view.Views
 import java.util.function.BiConsumer
@@ -206,7 +209,7 @@ fun <T: IntegerType<T>> RandomAccessibleInterval<T>.contentsEqual(ref: Long) = c
 fun <T: ValueEquals<T>> RandomAccessibleInterval<T>.contentsEqual(that: RandomAccessibleInterval<T>): RandomAccessibleInterval<BitType> {
     require(Intervals.equalDimensions(this, that), {"Dimensionality mismatch: $this $that"})
     val paired = Views.translate(Views.interval(Views.pair(Views.zeroMin(this), Views.zeroMin(that)), Views.zeroMin(this)), *this.minAsLongs())
-    return Converters.convert(paired as RandomAccessibleInterval<net.imglib2.util.Pair<T, T>>, { s, t -> t.set(s.a.valueEquals(s.b)) }, BitType())
+    return Converters.convert(paired as RandomAccessibleInterval<Pair<T, T>>, { s, t -> t.set(s.a.valueEquals(s.b)) }, BitType())
 }
 
 fun <T> RandomAccessibleInterval<T>.all(predicate: (T) -> Boolean): Boolean = Views.iterable(this).all(predicate)
@@ -220,7 +223,7 @@ fun <T> RandomAccessibleInterval<T>.iterable() = Views.iterable(this)
 fun <T> RandomAccessibleInterval<T>.flatIterable() = Views.flatIterable(this)
 
 // TODO should these create copies or views?
-operator fun <B: BooleanType<B>> RandomAccessibleInterval<B>.not() = Converters.convert(this, {s, t -> t.set(!s.get())}, createType())
+operator fun <B: BooleanType<B>> RandomAccessibleInterval<B>.not() = Converters.convert(this, { s, t -> t.set(!s.get())}, createType())
 operator fun <T: Type<T>> RandomAccessibleInterval<T>.unaryPlus()= Converters.convert(this, { s, t -> t.set(s) }, createType())
 operator fun <T: NumericType<T>> RandomAccessibleInterval<T>.unaryMinus() = Converters.convert(this, { s, t -> t.set(s); t.mul(-1.0) }, createType())
 

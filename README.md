@@ -54,8 +54,9 @@ Or, run this with [`kscript`](https://github.com/holgerbrandl/kscript):
 import kotlin.math.sqrt
 import kotlin.random.Random
 import net.imglib2.img.array.ArrayImgs
-import net.imglib2.*
-import net.imglib2.type.numeric.real.*
+import net.imglib2.RandomAccessibleInterval
+import net.imglib2.imklib.extensions.*
+import net.imglib2.imklib.extensions.type.numeric.real.*
 val img = ArrayImgs.doubles(1, 2, 3)
 
 fun raiFlatToString(rai: RandomAccessibleInterval<*>) = rai.iterable().joinToString(", ", prefix="${rai::class.java.simpleName}[", postfix="]")

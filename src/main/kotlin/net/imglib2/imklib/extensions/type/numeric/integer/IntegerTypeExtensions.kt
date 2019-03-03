@@ -1,4 +1,4 @@
-package net.imglib2.type.numeric.integer
+package net.imglib2.imklib.extensions.type.numeric.integer
 
 import net.imglib2.type.numeric.IntegerType
 

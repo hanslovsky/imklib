@@ -1,5 +1,9 @@
-package net.imglib2
+package net.imglib2.imklib.extensions
 
+import net.imglib2.Interval
+import net.imglib2.Localizable
+import net.imglib2.RandomAccessible
+import net.imglib2.RandomAccessibleInterval
 import net.imglib2.loops.LoopBuilder
 import net.imglib2.type.Type
 import net.imglib2.view.Views

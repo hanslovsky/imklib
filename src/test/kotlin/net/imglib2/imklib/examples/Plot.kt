@@ -1,13 +1,13 @@
-package net.imglib2.examples
+package net.imglib2.imklib.examples
 
 // import net.imglib2.* for RAI extensions
-import net.imglib2.div
-import net.imglib2.exp
+import net.imglib2.imklib.extensions.div
+import net.imglib2.imklib.extensions.exp
 import net.imglib2.img.array.ArrayImgs
-import net.imglib2.iterable
-import net.imglib2.minus
-import net.imglib2.times
-import net.imglib2.unaryMinus
+import net.imglib2.imklib.extensions.iterable
+import net.imglib2.imklib.extensions.minus
+import net.imglib2.imklib.extensions.times
+import net.imglib2.imklib.extensions.unaryMinus
 import org.knowm.xchart.SwingWrapper
 import org.knowm.xchart.XYChartBuilder
 import org.knowm.xchart.style.Styler
