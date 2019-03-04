@@ -3,7 +3,8 @@ package net.imglib2.imklib.examples
 import net.imglib2.RandomAccessibleInterval
 import net.imglib2.img.array.ArrayImgs
 import net.imglib2.imklib.extensions.ALL
-import net.imglib2.imklib.extensions.DOM
+import net.imglib2.imklib.extensions.AX
+import net.imglib2.imklib.extensions.STAX
 import net.imglib2.imklib.extensions.all
 import net.imglib2.imklib.extensions.contentsEqual
 import net.imglib2.imklib.extensions.get
@@ -20,7 +21,7 @@ fun main() {
         Views.hyperSlice(rai, 0, i.toLong()).let {
             println(it.contentsEqual(sl1[it]).all())
             for (j in 0 until 4) {
-                val sl2 = sl1[j, DOM]
+                val sl2 = sl1[j, AX]
                 Views.hyperSlice(it, 0, j.toLong()).let {
                     println(it.contentsEqual(sl2[it]).all())
                 }
@@ -33,7 +34,7 @@ fun main() {
     }
 
     for (j in 0 until 4) {
-        Views.hyperSlice(rai, 1, j.toLong()).let { println(it.contentsEqual(rai[DOM, j][it]).all()) }
+        Views.hyperSlice(rai, 1, j.toLong()).let { println(it.contentsEqual(rai[AX, j][it]).all()) }
     }
 
     for (k in 0 until 5) {
@@ -43,18 +44,19 @@ fun main() {
     val rai1D = ArrayImgs.ints((0 until 5).map { it }.toIntArray(), 5)
     fun raiToString(img: RandomAccessibleInterval<*>) = img.iterable().joinToString(", ", prefix = "RAI[", postfix = "]") { it.toString() }
     println(raiToString(rai1D))
-    println(raiToString(rai1D[-DOM]))
-    println(raiToString(rai1D[1 .. 3]))
-    println(raiToString(rai1D[1 .. 3][-DOM]))
-    println(raiToString(rai1D[3 downTo  1]))
-    println(raiToString(rai1D[3 downTo  1][-DOM]))
-    println(rai1D[1 .. 3].minAsLongs().joinToString(", "))
-    println(rai1D[1 .. 3].maxAsLongs().joinToString(", "))
-    println(raiToString(rai1D[0 .. 4 step 3]))
-    println(raiToString(rai1D[4 downTo 0 step 2]))
-    println(Arrays.toString(rai1D[1 .. 4 step 2].minAsLongs()))
-    println(Arrays.toString(rai1D[1 .. 4 step 2].maxAsLongs()))
-    println(raiToString(rai1D[1 .. 4 step 2][DOM]))
-    println(raiToString(rai1D[1 .. 4 step 2][-DOM]))
+    println(raiToString(rai1D[-AX]))
+    println(raiToString(rai1D[AX(1, 3)]))
+    println(raiToString(rai1D[AX(1, 3)][-AX]))
+    println(raiToString(rai1D[AX(1, 3, -1)]))
+    println(rai1D[AX(1, 3)].minAsLongs().joinToString(", "))
+    println(rai1D[AX(1, 3)].maxAsLongs().joinToString(", "))
+    println(raiToString(rai1D[AX(0, 4, 2)]))
+    println(raiToString(rai1D[STAX(0, 5, 2)]))
+    println(raiToString(rai1D[-AX[0, 4, 2]]))
+    println(raiToString(rai1D[AX(step=-2)]))
+    println(Arrays.toString(rai1D[AX(1, 4, 2)].minAsLongs()))
+    println(Arrays.toString(rai1D[AX(1, 4, 2)].maxAsLongs()))
+    println(raiToString(rai1D[AX(1, 4, 2)][+AX]))
+    println(raiToString(rai1D[AX(1, 4, 2)][-AX]))
 
 }

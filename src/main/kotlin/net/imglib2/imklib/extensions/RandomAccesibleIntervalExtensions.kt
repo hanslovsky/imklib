@@ -13,7 +13,6 @@ import net.imglib2.type.numeric.NumericType
 import net.imglib2.type.numeric.RealType
 import net.imglib2.type.numeric.real.DoubleType
 import net.imglib2.Point
-import net.imglib2.RandomAccessible
 import net.imglib2.RandomAccessibleInterval
 import net.imglib2.type.operators.ValueEquals
 import net.imglib2.util.ConstantUtils
@@ -21,7 +20,6 @@ import net.imglib2.util.Intervals
 import net.imglib2.util.Pair
 import net.imglib2.util.Util
 import net.imglib2.view.Views
-import java.util.Arrays
 import java.util.function.BiConsumer
 import java.util.function.DoubleUnaryOperator
 import java.util.function.Predicate
@@ -252,7 +250,7 @@ operator fun <T> RandomAccessibleInterval<T>.get(vararg slicing: Any): RandomAcc
     if (slicing.any { it is ALL }) {
         require(slicing.filter { it is ALL }.size <= 1) { "Using more than one ALL object is ambiguous" }
         val sliceIndex = slicing.indexOfFirst { it is ALL }.let { if (it == -1) slicing.size - 1 else it }
-        val indices = Array<Any>(numDimensions(), {DOM})
+        val indices = Array<Any>(numDimensions(), {AX})
         slicing.asList().subList(0, sliceIndex).forEachIndexed { index, any -> indices[index] = any }
         slicing.asList().subList(sliceIndex + 1, slicing.size).reversed().forEachIndexed { index, any -> indices[indices.size - 1 - index] = any}
         return get(*indices)
@@ -263,15 +261,15 @@ operator fun <T> RandomAccessibleInterval<T>.get(vararg slicing: Any): RandomAcc
     }
 
     var sliced = this
-    slicing.withIndex().forEach { sliced = if (it.value is DOM || it.value is DOM_INV || isProgression(it.value)) sliced else Views.hyperSlice(sliced, it.index, asLong(it.value)) }
+    slicing.withIndex().reversed().forEach { sliced = if (it.value is _Axis) sliced else Views.hyperSlice(sliced, it.index, asLong(it.value)) }
 
-    return slicing.mapIndexed { index, any -> if (any is DOM_INV) max(index) downTo min(index) step 1 else any }.filter { isProgression(it) }.let {progressions ->
-        if (progressions.size == 0)
+    return slicing.filter { it is _Axis }.map { it as _Axis }.let { axes ->
+        if (axes.size == 0)
             sliced
         else {
-            val min = progressions.map { if (it is IntProgression) it.first.toLong() else if (it is LongProgression) it.first else Long.MIN_VALUE }.toLongArray()
-            val max = progressions.map { if (it is IntProgression) it.last.toLong() else if (it is LongProgression) it.last else Long.MAX_VALUE }.toLongArray()
-            val steps = progressions.map { if (it is IntProgression) it.step.toLong() else if (it is LongProgression) it.step else Long.MAX_VALUE }.toLongArray()
+            val min = axes.mapIndexed { index, ax -> if (ax.step < 0) ax.max?: max(index) else ax.min?: min(index) }.toLongArray()
+            val max = axes.mapIndexed { index, ax -> if (ax.step < 0) ax.min?: min(index) else ax.max?: max(index) }.toLongArray()
+            val steps = axes.map { it.step }.toLongArray()
 
             for (index in min.indices) {
                 val m = min[index]
