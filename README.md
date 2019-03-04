@@ -50,12 +50,24 @@ Or, run this with [`kscript`](https://github.com/holgerbrandl/kscript):
 @file:MavenRepository("imagej.public", "https://maven.imagej.net/content/groups/public")
 @file:DependsOn("net.imglib2:imglib2:5.6.4-SNAPSHOT")
 @file:DependsOn("net.imglib2:imklib:0.1.1-SNAPSHOT")
+@file:DependsOn("org.janelia.saalfeldlab:n5-imglib2:3.2.0")
+@file:DependsOn("org.janelia.saalfeldlab:n5-hdf5:1.0.2")
+@file:DependsOn("sc.fiji:bigdataviewer-vistools:1.0.0-beta-13")
 
+import java.nio.file.Files
+import java.nio.file.Paths
+
+import bdv.util.BdvFunctions
+import bdv.util.volatiles.VolatileViews
 import kotlin.math.sqrt
 import kotlin.random.Random
 import net.imglib2.img.array.ArrayImgs
 import net.imglib2.RandomAccessibleInterval
 import net.imglib2.imklib.extensions.*
+import net.imglib2.type.numeric.integer.UnsignedByteType
+import org.janelia.saalfeldlab.n5.hdf5.N5HDF5Reader
+import org.janelia.saalfeldlab.n5.imglib2.N5Utils
+
 val img = ArrayImgs.doubles(1, 2, 3)
 
 fun raiFlatToString(rai: RandomAccessibleInterval<*>) = rai.iterable().joinToString(", ", prefix="${rai::class.java.simpleName}[", postfix="]")
@@ -83,5 +95,14 @@ println(raiFlatToString(checkerboards[AX, 0][AX(1, 7, 2)]))
 println(raiFlatToString(checkerboards[AX, 1][AX(1, 7, 2)]))
 println(raiFlatToString(checkerboards[+AX, 0]))
 println(raiFlatToString(checkerboards[-AX, 0]))
+
+val path = Paths.get("${System.getProperty("user.home")}", "Downloads", "sample_A_padded_20160501.hdf")
+if (Files.exists(path)) {
+    val resolution = doubleArrayOf(4.0, 4.0, 40.0)
+    val container = N5HDF5Reader(path.toAbsolutePath().toString(), true, 128, 128, 13)
+    val dataset = "volumes/raw"
+    val raw = VolatileViews.wrapAsVolatile(N5Utils.openVolatile<UnsignedByteType>(container, dataset))
+    BdvFunctions.show(raw[AX..10, AX..10], "subsampled")
+}
 ```
 
