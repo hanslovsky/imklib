@@ -2,6 +2,7 @@ package net.imglib2.imklib.extensions
 
 import net.imglib2.FinalInterval
 import net.imglib2.Interval
+import net.imglib2.Localizable
 import net.imglib2.converter.Converters
 import net.imglib2.loops.LoopBuilder
 import net.imglib2.type.BooleanType
@@ -230,8 +231,20 @@ fun <T: RealType<T>> RandomAccessibleInterval<T>.apply(func: (Double) -> Double)
 fun <T: RealType<T>, U: RealType<U>> RandomAccessibleInterval<T>.exp(dtype: U) = apply(DoubleUnaryOperator{ Math.exp(it) }, dtype)
 fun <T: RealType<T>> RandomAccessibleInterval<T>.exp() = exp(DoubleType())
 
+operator fun <T> RandomAccessibleInterval<T>.get(vararg pos: Long): T = randomAccess().get(*pos)
+
+operator fun <T> RandomAccessibleInterval<T>.get(vararg pos: Int): T = randomAccess().get(*pos)
+
+operator fun <T> RandomAccessibleInterval<T>.get(pos: Localizable): T = randomAccess()[pos]
+
 operator fun <T> RandomAccessibleInterval<T>.get(interval: Interval): RandomAccessibleInterval<T> = Views.interval(this, interval)
 operator fun <T> RandomAccessibleInterval<T>.get(min: LongArray, max: LongArray) = get(FinalInterval(min, max))
+
+operator fun <T> RandomAccessibleInterval<T>.get(interval: Interval, vararg pos: Long): T = randomAccess(interval).get(*pos)
+
+operator fun <T> RandomAccessibleInterval<T>.get(interval: Interval, vararg pos: Int): T = randomAccess(interval).get(*pos)
+
+operator fun <T> RandomAccessibleInterval<T>.get(interval: Interval, pos: Localizable): T = randomAccess(interval)[pos]
 operator fun <T> RandomAccessibleInterval<T>.get(vararg slicing: Any): RandomAccessibleInterval<T> {
     slicing.forEach { require(isValidGetArg(it)) { "Not a valid slicing argument: $it" } }
     if (slicing.any { it is ALL }) {
