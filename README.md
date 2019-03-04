@@ -72,5 +72,14 @@ println(raiFlatToString(-img2))
 println(raiFlatToString(img2 / img))
 println(raiFlatToString(img2.exp()))
 println(raiFlatToString(img2.apply({sqrt(it)})))
+
+val checkerboards = ArrayImgs.ints((0 until 8).map { val first = it % 2; (0 until 8).map { first - (it % 2)  }.map { it * it } }.flatten().toIntArray(), 8, 8)
+println(raiFlatToString(checkerboards))
+println(raiFlatToString(checkerboards[DOM, 0]))
+println(raiFlatToString(checkerboards[DOM, 1]))
+println(raiFlatToString(checkerboards[DOM, 0][0 .. 7 step 2]))
+println(raiFlatToString(checkerboards[DOM, 1][0 .. 7 step 2]))
+println(raiFlatToString(checkerboards[DOM, 0][1 .. 7 step 2]))
+println(raiFlatToString(checkerboards[DOM, 1][1 .. 7 step 2]))
 ```
 
