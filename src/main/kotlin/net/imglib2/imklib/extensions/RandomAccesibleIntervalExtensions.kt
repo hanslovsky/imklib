@@ -21,6 +21,7 @@ import net.imglib2.util.Intervals
 import net.imglib2.util.Pair
 import net.imglib2.util.Util
 import net.imglib2.view.Views
+import java.util.Arrays
 import java.util.function.BiConsumer
 import java.util.function.DoubleUnaryOperator
 import java.util.function.Predicate
@@ -177,6 +178,7 @@ fun <T> RandomAccessibleInterval<T>.maxAsInts() = Intervals.maxAsIntArray(this)
 fun <T> RandomAccessibleInterval<T>.minAsPoint() = Point(*minAsLongs())
 fun <T> RandomAccessibleInterval<T>.maxAsPoint() = Point(*maxAsLongs())
 fun <T> RandomAccessibleInterval<T>.isZeroMin() = Views.isZeroMin(this)
+fun <T> RandomAccessibleInterval<T>.zeroMin() = Views.zeroMin(this)
 
 
 fun <T> RandomAccessibleInterval<T>.getType() = get(*maxAsLongs())
@@ -261,17 +263,34 @@ operator fun <T> RandomAccessibleInterval<T>.get(vararg slicing: Any): RandomAcc
     }
 
     var sliced = this
-    slicing.withIndex().forEach { sliced = if (it.value is DOM) sliced else Views.hyperSlice(sliced, it.index, asLong(it.value)) }
+    slicing.withIndex().forEach { sliced = if (it.value is DOM || it.value is DOM_INV || isProgression(it.value)) sliced else Views.hyperSlice(sliced, it.index, asLong(it.value)) }
 
-    return slicing.filter { isProgression(it) }.let {progressions ->
+    return slicing.mapIndexed { index, any -> if (any is DOM_INV) max(index) downTo min(index) step 1 else any }.filter { isProgression(it) }.let {progressions ->
         if (progressions.size == 0)
             sliced
         else {
-            // TODO fix negative step
-            val min = slicing.map { if (it is IntProgression) it.first.toLong() else if (it is LongProgression) it.last else Long.MIN_VALUE }.toLongArray()
-            val max = slicing.map { if (it is IntProgression) it.last.toLong() else if (it is LongProgression) it.last else Long.MAX_VALUE }.toLongArray()
-            val steps = slicing.map { if (it is IntProgression) it.step.toLong() else if (it is LongProgression) it.step else Long.MAX_VALUE }.toLongArray()
-            (sliced as RandomAccessible<T>)[min, max].let {if (steps.any { it > 1 }) Views.subsample(it, *steps) else it}
+            val min = progressions.map { if (it is IntProgression) it.first.toLong() else if (it is LongProgression) it.first else Long.MIN_VALUE }.toLongArray()
+            val max = progressions.map { if (it is IntProgression) it.last.toLong() else if (it is LongProgression) it.last else Long.MAX_VALUE }.toLongArray()
+            val steps = progressions.map { if (it is IntProgression) it.step.toLong() else if (it is LongProgression) it.step else Long.MAX_VALUE }.toLongArray()
+
+            for (index in min.indices) {
+                val m = min[index]
+                val M = max[index]
+                val s = steps[index]
+                require((M - m) * s >= 0) {"Inconsistent range provided!"}
+                if (M < m) {
+                    val inverted = Views.invertAxis(sliced, index)
+//                    println("${Arrays.toString(inverted.minAsLongs())} ${Arrays.toString(inverted.maxAsLongs())}")
+                    sliced = Views.translate(inverted, m + M)
+//                    println("${Arrays.toString(sliced.minAsLongs())} ${Arrays.toString(sliced.maxAsLongs())}")
+                    min[index] = M
+                    max[index] = m
+                    steps[index] = -s
+                }
+            }
+
+//            println("${Arrays.toString(sliced.minAsLongs())} ${Arrays.toString(sliced.maxAsLongs())} ${Arrays.toString(min)} ${Arrays.toString(max)} ${Arrays.toString(steps)}")
+            sliced[min, max].let {if (steps.any { it > 1 }) Views.subsample(it, *steps) else it}
         }
     }
 }

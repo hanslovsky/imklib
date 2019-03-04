@@ -50,7 +50,7 @@ operator fun <T> RandomAccessible<T>.get(vararg slicing: Any): RandomAccessible<
     if (slicing.any { it is ALL }) {
         require(slicing.filter { it is ALL }.size <= 1) { "Using more than one ALL object is ambiguous" }
         val sliceIndex = slicing.indexOfFirst { it is ALL }.let { if (it == -1) slicing.size - 1 else it }
-        val indices = Array<Any>(numDimensions(), {DOM})
+        val indices = Array<Any>(numDimensions()) {DOM}
         slicing.asList().subList(0, sliceIndex).forEachIndexed { index, any -> indices[index] = any }
         slicing.asList().subList(sliceIndex + 1, slicing.size).reversed().forEachIndexed { index, any -> indices[indices.size - 1 - index] = any}
         return get(*indices)
@@ -61,12 +61,18 @@ operator fun <T> RandomAccessible<T>.get(vararg slicing: Any): RandomAccessible<
     }
 
     var sliced = this
-    slicing.withIndex().forEach { sliced = if (it.value is DOM) sliced else Views.hyperSlice(sliced, it.index, asLong(it.value)) }
+    slicing.withIndex().forEach {
+        sliced = if (it.value is DOM)
+            sliced else if (it.value is DOM_INV)
+            Views.invertAxis(sliced, it.index)
+            else
+            Views.hyperSlice(sliced, it.index, asLong(it.value))
+    }
     return sliced
 }
 
 fun isValidGetArg(arg: Any): Boolean {
-    return arg is ALL || arg is DOM || isInt(arg) || isProgression(arg)
+    return arg is ALL || arg is DOM || arg is DOM_INV || isInt(arg) || isProgression(arg)
 }
 
 fun isInt(arg: Any) = arg is Long || arg is Int
@@ -83,4 +89,10 @@ fun isProgression(arg: Any) = arg is IntProgression || arg is LongProgression
 object ALL
 
 // entire domain for axis
-object DOM
+object DOM {
+    operator fun unaryMinus() = DOM_INV
+}
+
+object DOM_INV {
+    operator fun unaryMinus() = DOM
+}
