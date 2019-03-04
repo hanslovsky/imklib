@@ -50,7 +50,7 @@ class RandomAccessibleExtensionsKtTest {
         Assert.assertTrue(img.all(Predicate { it.integerLong == 0L }))
 
 
-        img.get(1, 2, 3).set(1)
+        img.randomAccess()[1, 2, 3].set(1)
         Assert.assertFalse(img.contentsEqual(0).all())
         Assert.assertFalse(img.contentsEqual(0L).all())
         Assert.assertFalse(img.contentsEqual(IntType(0)).all())
