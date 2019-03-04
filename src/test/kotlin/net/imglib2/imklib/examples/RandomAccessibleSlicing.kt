@@ -58,5 +58,5 @@ fun main() {
     println(Arrays.toString(rai1D[AX(1, 4, 2)].maxAsLongs()))
     println(raiToString(rai1D[AX(1, 4, 2)][+AX]))
     println(raiToString(rai1D[AX(1, 4, 2)][-AX]))
-
+    println(raiToString(rai1D[AX..2]))
 }

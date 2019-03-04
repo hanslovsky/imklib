@@ -9,6 +9,7 @@ class _Axis(val min: Long? = null, val max: Long? = null, val step: Long = 1) {
     operator fun unaryPlus() = this
     operator fun unaryMinus() = _Axis(min = min, max = max, step = -step)
     operator fun get(min: Long? = null, max: Long? = null, step: Long = 1) = _Axis(min, max, step)
+    operator fun rangeTo(step: Long) = get(min = min, max = max, step = step)
 }
 
 val AX = _Axis()
