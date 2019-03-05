@@ -1,8 +1,6 @@
 package net.imglib2.imklib.extensions
 
-import net.imglib2.FinalInterval
-import net.imglib2.Interval
-import net.imglib2.Localizable
+import net.imglib2.*
 import net.imglib2.converter.Converters
 import net.imglib2.loops.LoopBuilder
 import net.imglib2.type.BooleanType
@@ -12,8 +10,6 @@ import net.imglib2.type.numeric.IntegerType
 import net.imglib2.type.numeric.NumericType
 import net.imglib2.type.numeric.RealType
 import net.imglib2.type.numeric.real.DoubleType
-import net.imglib2.Point
-import net.imglib2.RandomAccessibleInterval
 import net.imglib2.type.operators.ValueEquals
 import net.imglib2.util.ConstantUtils
 import net.imglib2.util.Intervals
