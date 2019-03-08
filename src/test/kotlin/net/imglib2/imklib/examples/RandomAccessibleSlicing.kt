@@ -6,7 +6,7 @@ import net.imglib2.imklib.extensions.ALL
 import net.imglib2.imklib.extensions.AX
 import net.imglib2.imklib.extensions.STAX
 import net.imglib2.imklib.extensions.all
-import net.imglib2.imklib.extensions.contentsEqual
+import net.imglib2.imklib.extensions.elementsEqual
 import net.imglib2.imklib.extensions.get
 import net.imglib2.imklib.extensions.iterable
 import net.imglib2.imklib.extensions.maxAsLongs
@@ -19,26 +19,26 @@ fun main() {
     for (i in 0 until 3) {
         val sl1 = rai[i, ALL]
         Views.hyperSlice(rai, 0, i.toLong()).let {
-            println(it.contentsEqual(sl1[it]).all())
+            println(it.elementsEqual(sl1[it]).all())
             for (j in 0 until 4) {
                 val sl2 = sl1[j, AX]
                 Views.hyperSlice(it, 0, j.toLong()).let {
-                    println(it.contentsEqual(sl2[it]).all())
+                    println(it.elementsEqual(sl2[it]).all())
                 }
             }
         }
     }
 
     for (i in 0 until 3) {
-        Views.hyperSlice(rai, 0, i.toLong()).let { println(it.contentsEqual(rai[i, ALL][it]).all()) }
+        Views.hyperSlice(rai, 0, i.toLong()).let { println(it.elementsEqual(rai[i, ALL][it]).all()) }
     }
 
     for (j in 0 until 4) {
-        Views.hyperSlice(rai, 1, j.toLong()).let { println(it.contentsEqual(rai[AX, j][it]).all()) }
+        Views.hyperSlice(rai, 1, j.toLong()).let { println(it.elementsEqual(rai[AX, j][it]).all()) }
     }
 
     for (k in 0 until 5) {
-        Views.hyperSlice(rai, 2, k.toLong()).let { println(it.contentsEqual(rai[ALL, k][it]).all()) }
+        Views.hyperSlice(rai, 2, k.toLong()).let { println(it.elementsEqual(rai[ALL, k][it]).all()) }
     }
 
     val rai1D = ArrayImgs.ints((0 until 5).map { it }.toIntArray(), 5)

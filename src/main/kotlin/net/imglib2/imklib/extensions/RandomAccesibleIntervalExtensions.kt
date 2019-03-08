@@ -1,6 +1,7 @@
 package net.imglib2.imklib.extensions
 
 import net.imglib2.*
+import net.imglib2.converter.Converter
 import net.imglib2.converter.Converters
 import net.imglib2.loops.LoopBuilder
 import net.imglib2.type.BooleanType
@@ -9,6 +10,7 @@ import net.imglib2.type.logic.BitType
 import net.imglib2.type.numeric.IntegerType
 import net.imglib2.type.numeric.NumericType
 import net.imglib2.type.numeric.RealType
+import net.imglib2.type.numeric.integer.IntType
 import net.imglib2.type.numeric.real.DoubleType
 import net.imglib2.type.operators.ValueEquals
 import net.imglib2.util.ConstantUtils
@@ -190,20 +192,34 @@ fun <T: Type<T>> RandomAccessibleInterval<T>.copy(): RandomAccessibleInterval<T>
     return copy
 }
 
-fun <T: ValueEquals<T>> RandomAccessibleInterval<T>.contentsEqual(ref: T) = Converters.convert(this, { src, tgt -> tgt.set(src.valueEquals(ref)) }, BitType())
-fun <T: RealType<T>> RandomAccessibleInterval<T>.contentsEqual(ref: Float) = contentsEqual(createType(ref))
-fun <T: RealType<T>> RandomAccessibleInterval<T>.contentsEqual(ref: Double) = contentsEqual(createType(ref))
-fun <T: IntegerType<T>> RandomAccessibleInterval<T>.contentsEqual(ref: Int) = contentsEqual(createType(ref))
-fun <T: IntegerType<T>> RandomAccessibleInterval<T>.contentsEqual(ref: Long) = contentsEqual(createType(ref))
+fun <T> RandomAccessibleInterval<T>.testElements(test: Predicate<T>) = convertTo(BitType()) { src, tgt -> tgt.set(test.test(src)) }
+fun <T> RandomAccessibleInterval<T>.testElements(test: (T) -> Boolean) = testElements(Predicate { test(it) })
+fun <T: ValueEquals<T>> RandomAccessibleInterval<T>.elementsEqual(ref: T) = testElements { ref.valueEquals(it) }
+fun <T: RealType<T>> RandomAccessibleInterval<T>.elementsEqual(ref: Float) = elementsEqual(createType(ref))
+fun <T: RealType<T>> RandomAccessibleInterval<T>.elementsEqual(ref: Double) = elementsEqual(createType(ref))
+fun <T: IntegerType<T>> RandomAccessibleInterval<T>.elementsEqual(ref: Int) = elementsEqual(createType(ref))
+fun <T: IntegerType<T>> RandomAccessibleInterval<T>.elementsEqual(ref: Long) = elementsEqual(createType(ref))
 
-fun <T: ValueEquals<T>> RandomAccessibleInterval<T>.contentsEqual(that: RandomAccessibleInterval<T>): RandomAccessibleInterval<BitType> {
+fun <T: Comparable<T>> RandomAccessibleInterval<T>.compareElementsTo(ref: T) = convertTo(IntType()) { src, tgt -> tgt.set(ref.compareTo(src)) }
+fun <T: Comparable<T>> RandomAccessibleInterval<T>.elmentsLargerThan(comparison: T) = compareElementsTo(comparison).elementsEqual(1)
+fun <T: Comparable<T>> RandomAccessibleInterval<T>.elementsSmallerThan(comparison: T) = compareElementsTo(comparison).elementsEqual(-1)
+fun <T: Comparable<T>> RandomAccessibleInterval<T>.elmentsLargerThanOrEqual(comparison: T) = compareElementsTo(comparison).testElements { it.get() >= 0 }
+fun <T: Comparable<T>> RandomAccessibleInterval<T>.elementsSmallerThanOrEqual(comparison: T) = compareElementsTo(comparison).testElements { it.get() <= 0 }
+
+
+fun <T, U: Type<U>> RandomAccessibleInterval<T>.convertTo(u: U, converter: Converter<T, U>) = Converters.convert(this, converter, u.createVariable())
+fun <T, U: Type<U>> RandomAccessibleInterval<T>.convertTo(u: U, converter: (T, U) -> Unit) = convertTo(u, Converter { src, tgt -> converter(src, tgt) })
+
+fun <T: Type<T>> RandomAccessibleInterval<T>.unique() = HashSet<T>().let {iterable().forEach { t -> if (!it.contains(t)) it.add(t.copy()) }; it }
+
+fun <T: ValueEquals<T>> RandomAccessibleInterval<T>.elementsEqual(that: RandomAccessibleInterval<T>): RandomAccessibleInterval<BitType> {
     require(Intervals.equalDimensions(this, that), {"Dimensionality mismatch: $this $that"})
     val paired = Views.translate(Views.interval(Views.pair(Views.zeroMin(this), Views.zeroMin(that)), Views.zeroMin(this)), *this.minAsLongs())
     return Converters.convert(paired as RandomAccessibleInterval<Pair<T, T>>, { s, t -> t.set(s.a.valueEquals(s.b)) }, BitType())
 }
 
-fun <T> RandomAccessibleInterval<T>.all(predicate: (T) -> Boolean): Boolean = Views.iterable(this).all(predicate)
-fun <T> RandomAccessibleInterval<T>.any(predicate: (T) -> Boolean): Boolean = Views.iterable(this).any(predicate)
+fun <T> RandomAccessibleInterval<T>.all(predicate: (T) -> Boolean): Boolean = iterable().all(predicate)
+fun <T> RandomAccessibleInterval<T>.any(predicate: (T) -> Boolean): Boolean = iterable().any(predicate)
 fun <T> RandomAccessibleInterval<T>.all(predicate: Predicate<T>): Boolean = all(predicate::test)
 fun <T> RandomAccessibleInterval<T>.any(predicate: Predicate<T>): Boolean = any(predicate::test)
 fun <B: BooleanType<B>> RandomAccessibleInterval<B>.all() = all {it.get()}
