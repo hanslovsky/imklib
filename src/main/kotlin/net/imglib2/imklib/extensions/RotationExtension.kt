@@ -1,13 +1,17 @@
 package net.imglib2.imklib.extensions
 
+import net.imglib2.FinalRealInterval
 import net.imglib2.RandomAccessible
 import net.imglib2.RandomAccessibleInterval
+import net.imglib2.algorithm.util.Grids
 import net.imglib2.interpolation.InterpolatorFactory
 import net.imglib2.interpolation.randomaccess.NLinearInterpolatorFactory
 import net.imglib2.type.numeric.NumericType
 import net.imglib2.view.Views
 import net.imglib2.realtransform.AffineTransform3D
 import net.imglib2.realtransform.RealViews
+import net.imglib2.roi.labeling.BoundingBox
+import net.imglib2.util.Intervals
 
 fun <T: NumericType<T>> RandomAccessibleInterval<T>.rotate(
         angle: Double,
@@ -50,6 +54,18 @@ fun <T: NumericType<T>> RandomAccessibleInterval<T>.rotate(
 
 
     val transformed = RealViews.affine(Views.interpolate(extension(this), interpolation), transform)
+    val points = arrayOf(
+            doubleArrayOf(min(0).toDouble(), min(1).toDouble(), min(2).toDouble()),
+            doubleArrayOf(min(0).toDouble(), min(1).toDouble(), max(2).toDouble()),
+            doubleArrayOf(min(0).toDouble(), max(1).toDouble(), min(2).toDouble()),
+            doubleArrayOf(min(0).toDouble(), max(1).toDouble(), max(2).toDouble()),
+            doubleArrayOf(max(0).toDouble(), min(1).toDouble(), min(2).toDouble()),
+            doubleArrayOf(max(0).toDouble(), min(1).toDouble(), max(2).toDouble()),
+            doubleArrayOf(max(0).toDouble(), max(1).toDouble(), min(2).toDouble()),
+            doubleArrayOf(max(0).toDouble(), max(1).toDouble(), max(2).toDouble()))
+            .map { transform.apply(it, it); it }
+    val min = points.fold(DoubleArray(3) {Double.POSITIVE_INFINITY}) {m, p -> m.indices.forEach { m[it] = Math.min(m[it], p[it]) }; m}
+    val max = points.fold(DoubleArray(3) {Double.NEGATIVE_INFINITY}) {m, p -> m.indices.forEach { m[it] = Math.max(m[it], p[it]) }; m}
 
-    return Views.interval(transformed,this)
+    return Views.interval(transformed,Intervals.smallestContainingInterval(FinalRealInterval(min, max)))
 }
