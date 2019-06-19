@@ -9,7 +9,7 @@
 
 	<groupId>net.imglib2</groupId>
 	<artifactId>imklib</artifactId>
-	<version>0.1.1-SNAPSHOT</version>
+	<version>0.1.2-SNAPSHOT</version>
 
 	<name>ImgLib2 Kotlin</name>
 	<description>Kotlin extensions for imglib2</description>
