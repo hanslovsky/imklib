@@ -9,7 +9,7 @@
 
 	<groupId>net.imglib2</groupId>
 	<artifactId>imklib</artifactId>
-	<version>0.1.1-SNAPSHOT</version>
+	<version>0.1.1</version>
 
 	<name>ImgLib2 Kotlin</name>
 	<description>Kotlin extensions for imglib2</description>
@@ -60,7 +60,7 @@
 	<scm>
 		<connection>scm:git:git://github.com/hanslovsky/imklib</connection>
 		<developerConnection>scm:git:git@github.com:hanslovsky/imklib</developerConnection>
-		<tag>HEAD</tag>
+		<tag>imklib-0.1.1</tag>
 		<url>https://github.com/hanslovsky/imklib</url>
 	</scm>
 	<issueManagement>
