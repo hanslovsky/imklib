@@ -1,0 +1,81 @@
+#!/usr/bin/bash
+
+set -e
+
+function _get_version {
+    POM_XML="$1"
+    PACKAGE="$2"
+    PATTERN='/*[local-name()="project"]/*[local-name()="properties"]/*[local-name()="%s.version"]/text()'
+    QUERY="$(printf $PATTERN $PACKAGE)"
+    VERSION="$(xmllint --xpath ${QUERY} ${POM_XML})"
+    echo $VERSION
+    exit 0
+}
+
+POM_SCIJAVA_VERSION="${POM_SCIJAVA_VERSION:-pom-scijava-27.0.1}"
+POM_SCIJAVA_URL="https://raw.githubusercontent.com/scijava/pom-scijava/${POM_SCIJAVA_VERSION}/pom.xml"
+CACHE_DIR="$HOME/.cache/imkscript"
+
+mkdir -p "${CACHE_DIR}/pom-scijava"
+POM_SCIJAVA_POM="${CACHE_DIR}/pom-scijava/${POM_SCIJAVA_VERSION}"
+
+if [ -f "${POM_SCIJAVA_POM}" ]; then
+    : # echo POM_SCIJAVA_POM exists at "$POM_SCIJAVA_POM"
+else
+    wget -O "${POM_SCIJAVA_POM}" "${POM_SCIJAVA_URL}"
+fi
+
+
+# TODO for now, use hard coded default versions until pom-scijava is more up-to-date
+IMGLIB2_VERSION="${IMGLIB2_VERSION:-5.8.0}" #$(_get_version ${POM_SCIJAVA_POM} imglib2)}"
+IMKLIB_VERSION="${IMKLIB_VERSION:-0.1.1}"
+# BIGDATAVIEWER_CORE_VERSION="${BIGDATAVIEWER_CORE_VERSION:-$(_get_version ${POM_SCIJAVA_POM} bigdataviewer-core)}"
+# BIGDATAVIEWER_VISTOOLS_VERSION="${BIGDATAVIEWER_VISTOOLS_VERSION:-$(_get_version ${POM_SCIJAVA_POM} bigdataviewer-vistools)}"
+BIGDATAVIEWER_CORE_VERSION="${BIGDATAVIEWER_CORE_VERSION:-7.0.0}"
+BIGDATAVIEWER_VISTOOLS_VERSION="${BIGDATAVIEWER_VISTOOLS_VERSION:-1.0.0-beta-17}"
+IMAGEJ_VERSION="${IMAGEJ_VERSION:-$(_get_version ${POM_SCIJAVA_POM} imagej)}"
+SCIJAVA_COMMON_VERSION="${SCIJAVA_COMMON_VERSION:-$(_get_version ${POM_SCIJAVA_POM} scijava-common)}"
+SIMPLIFIED_IO_VERSION="${SIMPLIFIED_IO_VERSION:-1.0.1}"
+
+
+TMP_SCRIPT_FILE="${TMP_SCRIPT_FILE:-$(mktemp --tmpdir imkscript.XXXXXXXXXXXXXX)}"
+cat <<EOF > "${TMP_SCRIPT_FILE}"
+#!/usr/bin/env kscript
+@file:MavenRepository("scijava.public", "https://maven.scijava.org/content/groups/public")
+@file:DependsOn("net.imglib2:imglib2:${IMGLIB2_VERSION}")
+@file:DependsOn("net.imglib2:imklib:${IMKLIB_VERSION}")
+@file:DependsOn("net.imagej:imagej:${IMAGEJ_VERSION}")
+@file:DependsOn("sc.fiji:bigdataviewer-vistools:${BIGDATAVIEWER_VISTOOLS_VERSION}")
+@file:DependsOn("sc.fiji:bigdataviewer-core:${BIGDATAVIEWER_CORE_VERSION}")
+@file:DependsOn("org.scijava:scijava-common:${SCIJAVA_COMMON_VERSION}")
+@file:DependsOn("sc.fiji:simplified-io:${SIMPLIFIED_IO_VERSION}")
+
+import bdv.util.BdvFunctions
+import bdv.util.BdvOptions
+
+import net.imagej.ImageJ
+
+import net.imglib2.RandomAccessibleInterval
+import net.imglib2.converter.Converters
+import net.imglib2.img.array.ArrayImgs
+import net.imglib2.type.numeric.ARGBType
+import net.imglib2.type.numeric.integer.IntType
+import net.imglib2.type.numeric.integer.LongType
+import net.imglib2.type.numeric.integer.ShortType
+import net.imglib2.type.numeric.integer.UnsignedByteType
+import net.imglib2.type.numeric.real.DoubleType
+import net.imglib2.view.Views
+
+import net.imglib2.imklib.extensions.*
+
+import sc.fiji.simplifiedio.SimplifiedIO
+
+EOF
+
+for INPUT_ARG in "$@"; do
+    cat "${INPUT_ARG}" >> $TMP_SCRIPT_FILE
+done
+
+
+kscript $TMP_SCRIPT_FILE
+
