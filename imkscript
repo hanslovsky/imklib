@@ -41,6 +41,7 @@ SIMPLIFIED_IO_VERSION="${SIMPLIFIED_IO_VERSION:-1.0.1}"
 TMP_SCRIPT_FILE="${TMP_SCRIPT_FILE:-$(mktemp --tmpdir imkscript.XXXXXXXXXXXXXX)}"
 cat <<EOF > "${TMP_SCRIPT_FILE}"
 #!/usr/bin/env kscript
+
 @file:MavenRepository("scijava.public", "https://maven.scijava.org/content/groups/public")
 @file:DependsOn("net.imglib2:imglib2:${IMGLIB2_VERSION}")
 @file:DependsOn("net.imglib2:imklib:${IMKLIB_VERSION}")
@@ -73,9 +74,8 @@ import sc.fiji.simplifiedio.SimplifiedIO
 EOF
 
 for INPUT_ARG in "$@"; do
-    cat "${INPUT_ARG}" >> $TMP_SCRIPT_FILE
+    sed -e '/^#!/d' "${INPUT_ARG}" >> $TMP_SCRIPT_FILE
 done
-
 
 kscript $TMP_SCRIPT_FILE
 
