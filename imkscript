@@ -40,6 +40,9 @@ BIGDATAVIEWER_VISTOOLS_VERSION="${BIGDATAVIEWER_VISTOOLS_VERSION:-1.0.0-beta-17}
 IMAGEJ_VERSION="${IMAGEJ_VERSION:-$(_get_version ${POM_SCIJAVA_POM} imagej)}"
 SCIJAVA_COMMON_VERSION="${SCIJAVA_COMMON_VERSION:-$(_get_version ${POM_SCIJAVA_POM} scijava-common)}"
 SIMPLIFIED_IO_VERSION="${SIMPLIFIED_IO_VERSION:-1.0.1}"
+N5_VERSION="${N5_VERSION:-2.1.0}"
+N5_IMGLIB2_VERSION="${N5_IMGLIB2_VERSION:-3.3.0}"
+N5_HDF5_VERSION="${N5_HDF5_VERSION:-1.0.4}"
 
 
 CUSTOM_KSCRIPT_PREAMBLE="$(cat <<EOF
@@ -51,6 +54,9 @@ CUSTOM_KSCRIPT_PREAMBLE="$(cat <<EOF
 @file:DependsOn("sc.fiji:bigdataviewer-core:${BIGDATAVIEWER_CORE_VERSION}")
 @file:DependsOn("org.scijava:scijava-common:${SCIJAVA_COMMON_VERSION}")
 @file:DependsOn("sc.fiji:simplified-io:${SIMPLIFIED_IO_VERSION}")
+@file:DependsOn("org.janelia.saalfeldlab:n5:${N5_VERSION}")
+@file:DependsOn("org.janelia.saalfeldlab:n5-imglib2:${N5_IMGLIB2_VERSION}")
+@file:DependsOn("org.janelia.saalfeldlab:n5-hdf5:${N5_HDF5_VERSION}")
 
 import bdv.util.BdvFunctions
 import bdv.util.BdvOptions
@@ -60,19 +66,55 @@ import bdv.util.BdvOptions
 import net.imglib2.RandomAccessibleInterval
 import net.imglib2.converter.Converters
 import net.imglib2.img.array.ArrayImgs
+import net.imglib2.type.NativeType
 import net.imglib2.type.numeric.ARGBType
+import net.imglib2.type.numeric.integer.ByteType
 import net.imglib2.type.numeric.integer.IntType
 import net.imglib2.type.numeric.integer.LongType
 import net.imglib2.type.numeric.integer.ShortType
 import net.imglib2.type.numeric.integer.UnsignedByteType
+import net.imglib2.type.numeric.integer.UnsignedIntType
+import net.imglib2.type.numeric.integer.UnsignedLongType
+import net.imglib2.type.numeric.integer.UnsignedShortType
 import net.imglib2.type.numeric.real.DoubleType
+import net.imglib2.type.numeric.real.FloatType
 import net.imglib2.view.Views
 
 import net.imglib2.imklib.extensions.*
 
+import org.janelia.saalfeldlab.n5.DataType
+import org.janelia.saalfeldlab.n5.N5FSReader
+import org.janelia.saalfeldlab.n5.N5FSWriter
+import org.janelia.saalfeldlab.n5.N5Reader
+import org.janelia.saalfeldlab.n5.N5Writer
+import org.janelia.saalfeldlab.n5.hdf5.N5HDF5Reader
+import org.janelia.saalfeldlab.n5.hdf5.N5HDF5Writer
+import org.janelia.saalfeldlab.n5.imglib2.N5Utils
+
 import sc.fiji.simplifiedio.SimplifiedIO
 
-typealias SIO = SimplifiedIO
+typealias SIO    = SimplifiedIO
+typealias RAI<T> = RandomAccessibleInterval<T>
+
+java.lang.Thread
+    .currentThread()
+    .setContextClassLoader(java.lang.invoke.MethodHandles.lookup().lookupClass().getClassLoader())
+
+fun n5open(container: N5Reader, dataset: String): RAI<out NativeType<*>>? {
+    return when(container.getDatasetAttributes(dataset).dataType) {
+        DataType.UINT8 -> N5Utils.open<UnsignedByteType>(container, dataset)
+        DataType.UINT16 -> N5Utils.open<UnsignedShortType>(container, dataset)
+        DataType.UINT32 -> N5Utils.open<UnsignedIntType>(container, dataset)
+        DataType.UINT64 -> N5Utils.open<UnsignedLongType>(container, dataset)
+        DataType.INT8 -> N5Utils.open<ByteType>(container, dataset)
+        DataType.INT16 -> N5Utils.open<ShortType>(container, dataset)
+        DataType.INT32 -> N5Utils.open<IntType>(container, dataset)
+        DataType.INT64 -> N5Utils.open<LongType>(container, dataset)
+        DataType.FLOAT32 -> N5Utils.open<FloatType>(container, dataset)
+        DataType.FLOAT64 -> N5Utils.open<DoubleType>(container, dataset)
+        else -> null
+    }
+}
 
 EOF
 )"
