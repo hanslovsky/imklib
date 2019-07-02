@@ -1,5 +1,9 @@
 #!/usr/bin/bash
 
+# https://github.com/holgerbrandl/kscript/blob/master/docs/user_guide.md#create-interpreters-for-custom-dsls
+# https://github.com/holgerbrandl/kscript/blob/master/test/resources/custom_dsl/mydsl
+# https://stackoverflow.com/questions/12855000/bash-redirecting-eof-into-variable
+
 set -e
 
 function _get_version {
@@ -38,14 +42,11 @@ SCIJAVA_COMMON_VERSION="${SCIJAVA_COMMON_VERSION:-$(_get_version ${POM_SCIJAVA_P
 SIMPLIFIED_IO_VERSION="${SIMPLIFIED_IO_VERSION:-1.0.1}"
 
 
-TMP_SCRIPT_FILE="${TMP_SCRIPT_FILE:-$(mktemp --tmpdir imkscript.XXXXXXXXXXXXXX)}"
-cat <<EOF > "${TMP_SCRIPT_FILE}"
-#!/usr/bin/env kscript
-
+CUSTOM_KSCRIPT_PREAMBLE="$(cat <<EOF
 @file:MavenRepository("scijava.public", "https://maven.scijava.org/content/groups/public")
 @file:DependsOn("net.imglib2:imglib2:${IMGLIB2_VERSION}")
 @file:DependsOn("net.imglib2:imklib:${IMKLIB_VERSION}")
-@file:DependsOn("net.imagej:imagej:${IMAGEJ_VERSION}")
+// @file:DependsOn("net.imagej:imagej:${IMAGEJ_VERSION}")
 @file:DependsOn("sc.fiji:bigdataviewer-vistools:${BIGDATAVIEWER_VISTOOLS_VERSION}")
 @file:DependsOn("sc.fiji:bigdataviewer-core:${BIGDATAVIEWER_CORE_VERSION}")
 @file:DependsOn("org.scijava:scijava-common:${SCIJAVA_COMMON_VERSION}")
@@ -54,7 +55,7 @@ cat <<EOF > "${TMP_SCRIPT_FILE}"
 import bdv.util.BdvFunctions
 import bdv.util.BdvOptions
 
-import net.imagej.ImageJ
+// import net.imagej.ImageJ
 
 import net.imglib2.RandomAccessibleInterval
 import net.imglib2.converter.Converters
@@ -71,11 +72,12 @@ import net.imglib2.imklib.extensions.*
 
 import sc.fiji.simplifiedio.SimplifiedIO
 
+typealias SIO = SimplifiedIO
+
 EOF
+)"
 
-for INPUT_ARG in "$@"; do
-    sed -e '/^#!/d' "${INPUT_ARG}" >> $TMP_SCRIPT_FILE
-done
-
-kscript $TMP_SCRIPT_FILE
+# uncomment to log pre
+# echo -e "$CUSTOM_KSCRIPT_PREAMBLE"
+CUSTOM_KSCRIPT_PREAMBLE=$CUSTOM_KSCRIPT_PREAMBLE exec kscript $@
 
