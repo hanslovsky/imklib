@@ -1,8 +1,8 @@
 #!/usr/bin/env kscript
 
 @file:MavenRepository("imagej.public", "https://maven.imagej.net/content/groups/public")
-@file:DependsOn("net.imglib2:imglib2:5.6.4-SNAPSHOT")
-@file:DependsOn("net.imglib2:imklib:0.1.1-SNAPSHOT")
+@file:DependsOn("net.imglib2:imglib2:5.7.0")
+@file:DependsOn("net.imglib2:imklib:0.1.1")
 @file:DependsOn("sc.fiji:bigdataviewer-vistools:1.0.0-beta-13")
 @file:DependsOn("net.imagej:ij:1.52k")
 @file:DependsOn("net.imglib2:imglib2-ij:2.0.0-beta-45")
