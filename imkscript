@@ -49,7 +49,7 @@ CUSTOM_KSCRIPT_PREAMBLE="$(cat <<EOF
 @file:MavenRepository("scijava.public", "https://maven.scijava.org/content/groups/public")
 @file:DependsOn("net.imglib2:imglib2:${IMGLIB2_VERSION}")
 @file:DependsOn("net.imglib2:imklib:${IMKLIB_VERSION}")
-// @file:DependsOn("net.imagej:imagej:${IMAGEJ_VERSION}")
+@file:DependsOn("net.imagej:imagej:${IMAGEJ_VERSION}")
 @file:DependsOn("sc.fiji:bigdataviewer-vistools:${BIGDATAVIEWER_VISTOOLS_VERSION}")
 @file:DependsOn("sc.fiji:bigdataviewer-core:${BIGDATAVIEWER_CORE_VERSION}")
 @file:DependsOn("org.scijava:scijava-common:${SCIJAVA_COMMON_VERSION}")
@@ -61,7 +61,7 @@ CUSTOM_KSCRIPT_PREAMBLE="$(cat <<EOF
 import bdv.util.BdvFunctions
 import bdv.util.BdvOptions
 
-// import net.imagej.ImageJ
+import net.imagej.ImageJ
 
 import net.imglib2.RandomAccessibleInterval
 import net.imglib2.converter.Converters
