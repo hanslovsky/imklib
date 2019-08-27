@@ -57,6 +57,7 @@ CUSTOM_KSCRIPT_PREAMBLE="$(cat <<EOF
 @file:DependsOn("org.janelia.saalfeldlab:n5:${N5_VERSION}")
 @file:DependsOn("org.janelia.saalfeldlab:n5-imglib2:${N5_IMGLIB2_VERSION}")
 @file:DependsOn("org.janelia.saalfeldlab:n5-hdf5:${N5_HDF5_VERSION}")
+@file:DependsOn("info.picocli:picocli:4.0.2")
 
 import bdv.util.BdvFunctions
 import bdv.util.BdvOptions
