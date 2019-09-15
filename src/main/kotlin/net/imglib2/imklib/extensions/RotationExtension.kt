@@ -3,15 +3,13 @@ package net.imglib2.imklib.extensions
 import net.imglib2.FinalRealInterval
 import net.imglib2.RandomAccessible
 import net.imglib2.RandomAccessibleInterval
-import net.imglib2.algorithm.util.Grids
 import net.imglib2.interpolation.InterpolatorFactory
 import net.imglib2.interpolation.randomaccess.NLinearInterpolatorFactory
-import net.imglib2.type.numeric.NumericType
-import net.imglib2.view.Views
 import net.imglib2.realtransform.AffineTransform3D
 import net.imglib2.realtransform.RealViews
-import net.imglib2.roi.labeling.BoundingBox
+import net.imglib2.type.numeric.NumericType
 import net.imglib2.util.Intervals
+import net.imglib2.view.Views
 
 fun <T: NumericType<T>> RandomAccessibleInterval<T>.rotate(
         angle: Double,
