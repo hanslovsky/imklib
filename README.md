@@ -105,12 +105,12 @@ val checkerboards = ArrayImgs.ints((0 until 8).map { val first = it % 2; (0 unti
 println(raiFlatToString(checkerboards))
 println(raiFlatToString(checkerboards[ALL, 0]))
 println(raiFlatToString(checkerboards[ALL, 1]))
-println(raiFlatToString(checkerboards[AX, 0][AX(0, 7, 2)]))
-println(raiFlatToString(checkerboards[AX, 1][AX(0, 7, 2)]))
-println(raiFlatToString(checkerboards[AX, 0][AX(1, 7, 2)]))
-println(raiFlatToString(checkerboards[AX, 1][AX(1, 7, 2)]))
-println(raiFlatToString(checkerboards[+AX, 0]))
-println(raiFlatToString(checkerboards[-AX, 0]))
+println(raiFlatToString(checkerboards[SL, 0][SL(0, 7, 2)]))
+println(raiFlatToString(checkerboards[SL, 1][SL(0, 7, 2)]))
+println(raiFlatToString(checkerboards[SL, 0][SL(1, 7, 2)]))
+println(raiFlatToString(checkerboards[SL, 1][SL(1, 7, 2)]))
+println(raiFlatToString(checkerboards[+SL, 0]))
+println(raiFlatToString(checkerboards[-SL, 0]))
 
 val url = "https://www.dropbox.com/s/g4i5ey9yc281dif/bfly_crop.jpeg?raw=1"
 // this does not work, throws
@@ -120,7 +120,7 @@ val url = "https://www.dropbox.com/s/g4i5ey9yc281dif/bfly_crop.jpeg?raw=1"
 val imp = ImagePlus(url)
 print("imp: $imp")
 val factor = 3L
-val rai = ImageJFunctions.wrapRGBA(imp)[AX..factor, AX..factor]
+val rai = ImageJFunctions.wrapRGBA(imp)[SL..factor, SL..factor]
 val butterflyBdv = BdvFunctions.show(rai, "butterfly", BdvOptions.options().is2D())
 val vp = butterflyBdv.bdvHandle.viewerPanel
 vp.visibilityAndGrouping.isGroupingEnabled = true

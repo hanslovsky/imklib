@@ -2,7 +2,7 @@
 
 @file:MavenRepository("imagej.public", "https://maven.imagej.net/content/groups/public")
 @file:DependsOn("net.imglib2:imglib2:5.7.0")
-@file:DependsOn("net.imglib2:imklib:0.1.1")
+@file:DependsOn("net.imglib2:imklib:0.1.2-SNAPSHOT")
 @file:DependsOn("sc.fiji:bigdataviewer-vistools:1.0.0-beta-13")
 @file:DependsOn("net.imagej:ij:1.52k")
 @file:DependsOn("net.imglib2:imglib2-ij:2.0.0-beta-45")
@@ -33,7 +33,7 @@ val url = "https://www.dropbox.com/s/g4i5ey9yc281dif/bfly_crop.jpeg?raw=1"
 // println("img: $butterfly")
 val imp = ImagePlus(url)
 val factor = 3L
-val rai = ImageJFunctions.wrapRGBA(imp)[AX..factor, AX..factor]
+val rai = ImageJFunctions.wrapRGBA(imp)[SL..factor, SL..factor]
 val butterflyBdv = BdvFunctions.show(rai, "butterfly", BdvOptions.options().is2D())
 val vp = butterflyBdv.bdvHandle.viewerPanel
 vp.visibilityAndGrouping.isGroupingEnabled = true

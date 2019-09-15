@@ -32,7 +32,7 @@ fi
 
 # TODO for now, use hard coded default versions until pom-scijava is more up-to-date
 IMGLIB2_VERSION="${IMGLIB2_VERSION:-5.8.0}" #$(_get_version ${POM_SCIJAVA_POM} imglib2)}"
-IMKLIB_VERSION="${IMKLIB_VERSION:-0.1.1}"
+IMKLIB_VERSION="${IMKLIB_VERSION:-0.1.2-SNAPSHOT}"
 # BIGDATAVIEWER_CORE_VERSION="${BIGDATAVIEWER_CORE_VERSION:-$(_get_version ${POM_SCIJAVA_POM} bigdataviewer-core)}"
 # BIGDATAVIEWER_VISTOOLS_VERSION="${BIGDATAVIEWER_VISTOOLS_VERSION:-$(_get_version ${POM_SCIJAVA_POM} bigdataviewer-vistools)}"
 BIGDATAVIEWER_CORE_VERSION="${BIGDATAVIEWER_CORE_VERSION:-7.0.0}"

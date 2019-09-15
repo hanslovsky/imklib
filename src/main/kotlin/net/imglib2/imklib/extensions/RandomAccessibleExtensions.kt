@@ -81,7 +81,7 @@ fun <T: Type<T>> RandomAccessible<T>.burnIn(interval: Interval) = Views.interval
 //    if (slicing.any { it is ALL }) {
 //        require(slicing.filter { it is ALL }.size <= 1) { "Using more than one ALL object is ambiguous" }
 //        val sliceIndex = slicing.indexOfFirst { it is ALL }.let { if (it == -1) slicing.size - 1 else it }
-//        val indices = Array<Any>(numDimensions()) {AX}
+//        val indices = Array<Any>(numDimensions()) {SL}
 //        slicing.asList().subList(0, sliceIndex).forEachIndexed { index, any -> indices[index] = any }
 //        slicing.asList().subList(sliceIndex + 1, slicing.size).reversed().forEachIndexed { index, any -> indices[indices.size - 1 - index] = any}
 //        return get(*indices)

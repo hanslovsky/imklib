@@ -3,7 +3,7 @@
 @file:MavenRepository("imagej.public", "https://maven.imagej.net/content/groups/public")
 @file:DependsOn("net.imglib2:imglib2:5.6.4-SNAPSHOT")
 @file:DependsOn("net.imglib2:imglib2-algorithm:0.11.0")
-@file:DependsOn("net.imglib2:imklib:0.1.1-SNAPSHOT")
+@file:DependsOn("net.imglib2:imklib:0.1.2-SNAPSHOT")
 @file:DependsOn("org.janelia.saalfeldlab:n5:2.0.2")
 @file:DependsOn("org.janelia.saalfeldlab:n5-imglib2:3.2.0")
 @file:DependsOn("info.picocli:picocli:3.9.5")
