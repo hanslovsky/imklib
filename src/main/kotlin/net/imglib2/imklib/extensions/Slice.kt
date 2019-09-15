@@ -28,20 +28,45 @@
  */
 package net.imglib2.imklib.extensions
 
-class _Axis(val min: Long? = null, val max: Long? = null, val step: Long = 1) {
+class Slice(val min: Long? = null, val max: Long? = null, val step: Long = 1) {
 
     init {
+        // check that max >= min, if defined
         min?.let{ max?.run { require(this >= it) } }
     }
 
     operator fun unaryPlus() = this
-    operator fun unaryMinus() = _Axis(min = min, max = max, step = -step)
-    operator fun get(min: Long? = null, max: Long? = null, step: Long = 1) = _Axis(min, max, step)
+    operator fun unaryMinus() = Slice(min = min, max = max, step = -step)
+    operator fun get(min: Long? = null, max: Long? = null, step: Long = 1) = Slice(min, max, step)
     operator fun rangeTo(step: Long) = get(min = min, max = max, step = step)
+
+    infix fun ST(step: Int) = ST(step.toLong())
+    infix fun ST(step: Long) = rangeTo(step)
+
 }
 
-val AX = _Axis()
+// inclusive range
+infix fun Int?.IN(max: Int?) = this?.toLong() IN max
 
-fun AX(min: Long? = null, max: Long? = null, step: Long = 1) = _Axis(min, max, step)
+infix fun Int?.IN(max: Long?) = this?.toLong() IN max
 
-fun STAX(start: Long? = null, stop: Long? = null, step: Long = 1) = _Axis(min = start, max = stop?.minus(1), step = step)
+infix fun Long?.IN(max: Int?) = this IN max?.toLong()
+
+infix fun Long?.IN(max: Long?) = Slice(this, max)
+
+fun IN(min: Long? = null, max: Long? = null, step: Long = 1) = min IN max ST step
+
+
+// exclusive range
+infix fun Int?.EX(stop: Int?) = this?.toLong() EX stop
+
+infix fun Int?.EX(stop: Long?) = this?.toLong() EX stop
+
+infix fun Long?.EX(stop: Int?) = this EX stop?.toLong()
+
+infix fun Long?.EX(stop: Long?) = Slice(this, stop?.minus(1))
+
+fun EX(start: Long? = null, stop: Long? = null, step: Long = 1) = start EX stop ST step
+
+
+val SL = Slice()

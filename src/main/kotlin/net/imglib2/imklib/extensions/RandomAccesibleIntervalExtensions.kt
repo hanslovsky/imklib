@@ -290,7 +290,7 @@ operator fun <T> RandomAccessibleInterval<T>.get(vararg slicing: Any): RandomAcc
     if (slicing.any { it is ALL }) {
         require(slicing.filter { it is ALL }.size <= 1) { "Using more than one ALL object is ambiguous" }
         val sliceIndex = slicing.indexOfFirst { it is ALL }.let { if (it == -1) slicing.size - 1 else it }
-        val indices = Array<Any>(numDimensions(), {AX})
+        val indices = Array<Any>(numDimensions(), {SL})
         slicing.asList().subList(0, sliceIndex).forEachIndexed { index, any -> indices[index] = any }
         slicing.asList().subList(sliceIndex + 1, slicing.size).reversed().forEachIndexed { index, any -> indices[indices.size - 1 - index] = any}
         return get(*indices)
@@ -301,9 +301,9 @@ operator fun <T> RandomAccessibleInterval<T>.get(vararg slicing: Any): RandomAcc
     }
 
     var sliced = this
-    slicing.withIndex().reversed().forEach { sliced = if (it.value is _Axis) sliced else Views.hyperSlice(sliced, it.index, asLong(it.value)) }
+    slicing.withIndex().reversed().forEach { sliced = if (it.value is Slice) sliced else Views.hyperSlice(sliced, it.index, asLong(it.value)) }
 
-    return slicing.filter { it is _Axis }.map { it as _Axis }.let { axes ->
+    return slicing.filter { it is Slice }.map { it as Slice }.let { axes ->
         if (axes.size == 0)
             sliced
         else {

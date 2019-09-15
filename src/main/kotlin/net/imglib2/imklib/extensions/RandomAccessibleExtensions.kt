@@ -103,7 +103,7 @@ fun <T: Type<T>> RandomAccessible<T>.burnIn(interval: Interval) = Views.interval
 //    return sliced
 //}
 
-fun isValidGetArg(arg: Any): Boolean = arg is ALL || arg is _Axis || isInt(arg)
+fun isValidGetArg(arg: Any): Boolean = arg is ALL || arg is Slice || isInt(arg)
 
 fun isInt(arg: Any) = arg is Long || arg is Int
 fun asLong(arg: Any): Long {
