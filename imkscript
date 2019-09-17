@@ -41,7 +41,7 @@ IMAGEJ_VERSION="${IMAGEJ_VERSION:-$(_get_version ${POM_SCIJAVA_POM} imagej)}"
 SCIJAVA_COMMON_VERSION="${SCIJAVA_COMMON_VERSION:-$(_get_version ${POM_SCIJAVA_POM} scijava-common)}"
 SIMPLIFIED_IO_VERSION="${SIMPLIFIED_IO_VERSION:-1.0.1}"
 N5_VERSION="${N5_VERSION:-2.1.0}"
-N5_IMGLIB2_VERSION="${N5_IMGLIB2_VERSION:-3.3.0}"
+N5_IMGLIB2_VERSION="${N5_IMGLIB2_VERSION:-3.4.1}"
 N5_HDF5_VERSION="${N5_HDF5_VERSION:-1.0.4}"
 
 
@@ -57,7 +57,7 @@ CUSTOM_KSCRIPT_PREAMBLE="$(cat <<EOF
 @file:DependsOn("org.janelia.saalfeldlab:n5:${N5_VERSION}")
 @file:DependsOn("org.janelia.saalfeldlab:n5-imglib2:${N5_IMGLIB2_VERSION}")
 @file:DependsOn("org.janelia.saalfeldlab:n5-hdf5:${N5_HDF5_VERSION}")
-@file:DependsOn("info.picocli:picocli:4.0.2")
+@file:DependsOn("info.picocli:picocli:4.0.4")
 
 import bdv.util.BdvFunctions
 import bdv.util.BdvOptions
