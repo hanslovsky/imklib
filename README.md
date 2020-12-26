@@ -1,5 +1,9 @@
 [![](https://travis-ci.org/hanslovsky/imklib.svg?branch=master)](https://travis-ci.org/hanslovsky/imklib)
 
+# DEPRECATED
+
+**Deprecation notice**: This project was exploratory work. For current development, see [saalfeldlab/imklib2](https://github.com/saalfeldlab/imklib2).
+
 imklib is an experimental library to explore the use of Kotlin extension functions and operator overloading for a NumPy like user experience for the [ImgLib2](https://github.com/imglib/imglib2) Java multi-dimensional image processing library.
 
 For details, check source code, tests, and [example](https://github.com/hanslovsky/imklib/blob/master/src/test/kotlin/net/imglib2/imklib/examples/Plot.kt):
